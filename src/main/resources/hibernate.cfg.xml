@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+
+        <!-- Database connection settings -->
+        <property name="connection.url">jdbc:mysql://localhost:3306/smartclasstest</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+
+        <property name="connection.username">root</property>
+        <property name="connection.password">hubiao</property>
+        <!--
+        <property name="connection.username">root</property>
+        <property name="connection.password">hubiao</property>
+        -->
+        <!-- charset for connection -->
+        <property name="connection.useUnicode">true</property>
+        <property name="connection.characterEncoding">UTF-8</property>
+        <!-- disable cache -->
+        <property name="hibernate.cache.use_second_level_cache">
+            false
+        </property>
+
+
+        <!-- c3p0 connection pool -->
+        <property name="hibernate.c3p0.min_size">2</property>
+        <property name="hibernate.c3p0.max_size">5</property>
+        <property name="hibernate.c3p0.timeout">1800</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.idle_test_period">10</property>
+
+        <mapping class="SmartClass.POJO.Administrator"/>
+        <mapping class="SmartClass.POJO.Course"/>
+        <mapping class="SmartClass.POJO.Student"/>
+        <mapping class="SmartClass.POJO.StudentCourse"/>
+        <mapping class="SmartClass.POJO.Teacher"/>
+
+    </session-factory>
+</hibernate-configuration>

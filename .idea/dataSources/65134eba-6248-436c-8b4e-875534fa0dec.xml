@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="smartclasstest@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.1">
+    <root id="1"/>
+    <schema id="2" parent="1" name="smartclasstest">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="app_coursein"/>
+    <schema id="4" parent="1" name="assignmentdb"/>
+    <schema id="5" parent="1" name="db_blog"/>
+    <schema id="6" parent="1" name="demo1"/>
+    <schema id="7" parent="1" name="hischool"/>
+    <schema id="8" parent="1" name="information_schema"/>
+    <schema id="9" parent="1" name="mysql"/>
+    <schema id="10" parent="1" name="performance_schema"/>
+    <schema id="11" parent="1" name="sakila"/>
+    <schema id="12" parent="1" name="servermangerdb"/>
+    <schema id="13" parent="1" name="smartclass"/>
+    <schema id="14" parent="1" name="sys"/>
+    <schema id="15" parent="1" name="webdb"/>
+    <schema id="16" parent="1" name="world"/>
+    <table id="17" parent="2" name="administrator"/>
+    <table id="18" parent="2" name="course"/>
+    <table id="19" parent="2" name="student"/>
+    <table id="20" parent="2" name="student_course"/>
+    <table id="21" parent="2" name="teacher"/>
+    <column id="22" parent="17" name="id">
+      <Position>1</Position>
+      <Comment>内部id</Comment>
+      <DataType>int(4)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="23" parent="17" name="username">
+      <Position>2</Position>
+      <DataType>varchar(32)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="24" parent="17" name="password">
+      <Position>3</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="25" parent="17" name="timerCreated">
+      <Position>4</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="26" parent="17" name="timerModified">
+      <Position>5</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="27" parent="17" name="username">
+      <ColNames>username</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="28" parent="17" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="29" parent="17" name="username">
+      <ColNames>username</ColNames>
+      <UnderlyingIndexName>username</UnderlyingIndexName>
+    </key>
+    <column id="30" parent="18" name="id">
+      <Position>1</Position>
+      <DataType>smallint(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="31" parent="18" name="courseName">
+      <Position>2</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="32" parent="18" name="teacherId">
+      <Position>3</Position>
+      <DataType>smallint(6)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="33" parent="18" name="checkinFlag">
+      <Position>4</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="34" parent="18" name="answerFlag">
+      <Position>5</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="35" parent="18" name="timeCreated">
+      <Position>6</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="36" parent="18" name="timeModified">
+      <Position>7</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="37" parent="18" name="tid">
+      <ColNames>teacherId</ColNames>
+    </index>
+    <key id="38" parent="18" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="39" parent="18" name="tid">
+      <ColNames>teacherId</ColNames>
+      <RefSchemaName>smartclasstest</RefSchemaName>
+      <RefTableName>teacher</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="40" parent="19" name="id">
+      <Position>1</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="41" parent="19" name="code">
+      <Position>2</Position>
+      <DataType>varchar(32)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="42" parent="19" name="name">
+      <Position>3</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="43" parent="19" name="password">
+      <Position>4</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="44" parent="19" name="timerCreated">
+      <Position>5</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="45" parent="19" name="timerModified">
+      <Position>6</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="46" parent="19" name="studentcode">
+      <ColNames>code</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="47" parent="19" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="48" parent="19" name="studentcode">
+      <ColNames>code</ColNames>
+      <UnderlyingIndexName>studentcode</UnderlyingIndexName>
+    </key>
+    <column id="49" parent="20" name="id">
+      <Position>1</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="50" parent="20" name="studentId">
+      <Position>2</Position>
+      <DataType>int(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="51" parent="20" name="courseId">
+      <Position>3</Position>
+      <DataType>smallint(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="52" parent="20" name="timeCreated">
+      <Position>4</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="53" parent="20" name="timeModified">
+      <Position>5</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="54" parent="20" name="courseid">
+      <ColNames>courseId</ColNames>
+    </index>
+    <index id="55" parent="20" name="studentcode">
+      <ColNames>studentId</ColNames>
+    </index>
+    <key id="56" parent="20" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="57" parent="20" name="stuId">
+      <ColNames>studentId</ColNames>
+      <RefSchemaName>smartclasstest</RefSchemaName>
+      <RefTableName>student</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="58" parent="20" name="course">
+      <ColNames>courseId</ColNames>
+      <RefSchemaName>smartclasstest</RefSchemaName>
+      <RefTableName>course</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="59" parent="21" name="id">
+      <Position>1</Position>
+      <DataType>smallint(6)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="60" parent="21" name="code">
+      <Position>2</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="61" parent="21" name="name">
+      <Position>3</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="62" parent="21" name="password">
+      <Position>4</Position>
+      <DataType>varchar(64)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="63" parent="21" name="timeCreated">
+      <Position>5</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="64" parent="21" name="timeModified">
+      <Position>6</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="65" parent="21" name="tcode">
+      <ColNames>code</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="66" parent="21" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="67" parent="21" name="tcode">
+      <ColNames>code</ColNames>
+      <UnderlyingIndexName>tcode</UnderlyingIndexName>
+    </key>
+  </database-model>
+</dataSource>

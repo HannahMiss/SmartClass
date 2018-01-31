@@ -3,6 +3,8 @@ package SmartClass.POJO;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by 73681 on 2018/1/30.
@@ -17,9 +19,10 @@ public class Course
     private Timestamp timeCreated;
     private Timestamp timeModified;
     private Teacher teacherByTeacherId;
-    private Collection<StudentCourse> studentCoursesById;
+    private Set<Student> students = new HashSet<Student>();
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public short getId()
     {
@@ -122,7 +125,7 @@ public class Course
         return result;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "teacherId", referencedColumnName = "id", nullable = false)
     public Teacher getTeacherByTeacherId()
     {
@@ -134,14 +137,20 @@ public class Course
         this.teacherByTeacherId = teacherByTeacherId;
     }
 
-    @OneToMany(mappedBy = "courseByCourseId")
-    public Collection<StudentCourse> getStudentCoursesById()
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "student_course",
+            joinColumns = {@JoinColumn(name = "courseId",referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "studentId",referencedColumnName = "id")}
+    )
+    public Set<Student> getStudents()
     {
-        return studentCoursesById;
+        return students;
     }
 
-    public void setStudentCoursesById(Collection<StudentCourse> studentCoursesById)
+    public void setStudents(Set<Student> students)
     {
-        this.studentCoursesById = studentCoursesById;
+        this.students = students;
     }
 }

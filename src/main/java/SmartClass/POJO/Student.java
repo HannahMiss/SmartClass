@@ -3,6 +3,9 @@ package SmartClass.POJO;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by 73681 on 2018/1/30.
@@ -16,9 +19,10 @@ public class Student
     private String password;
     private Timestamp timerCreated;
     private Timestamp timerModified;
-    private Collection<StudentCourse> studentCoursesById;
+    private Set<Course> courses = new HashSet<Course>();
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId()
     {
@@ -122,14 +126,14 @@ public class Student
         return result;
     }
 
-    @OneToMany(mappedBy = "studentByStudentId")
-    public Collection<StudentCourse> getStudentCoursesById()
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    public Set<Course> getCourses()
     {
-        return studentCoursesById;
+        return courses;
     }
 
-    public void setStudentCoursesById(Collection<StudentCourse> studentCoursesById)
+    public void setCourses(Set<Course> courses)
     {
-        this.studentCoursesById = studentCoursesById;
+        this.courses = courses;
     }
 }

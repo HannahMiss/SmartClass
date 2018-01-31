@@ -3,6 +3,7 @@ package SmartClass.POJO;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Created by 73681 on 2018/1/30.
@@ -16,9 +17,10 @@ public class Teacher
     private String password;
     private Timestamp timeCreated;
     private Timestamp timeModified;
-    private Collection<Course> coursesById;
+    private Collection<Course> coursesById = new HashSet<Course>();
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public short getId()
     {
@@ -121,7 +123,7 @@ public class Teacher
         return result;
     }
 
-    @OneToMany(mappedBy = "teacherByTeacherId")
+    @OneToMany(mappedBy = "teacherByTeacherId", fetch = FetchType.LAZY)
     public Collection<Course> getCoursesById()
     {
         return coursesById;

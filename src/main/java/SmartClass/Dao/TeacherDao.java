@@ -16,7 +16,7 @@ public interface TeacherDao
     void save(Teacher teacher) throws Exception;
 
     /*根据ID删除老师信息*/
-    void deleteById(short teacherId);
+    void deleteById(short teacherId) throws Exception;
 
     /*更新一个老师的信息*/
     void  update(Teacher teacher);
@@ -25,7 +25,7 @@ public interface TeacherDao
     Teacher getById(short teacherId) throws Exception;
 
     /*得到所有的老师的信息*/
-    List<Teacher> getAll();
+    List<Teacher> getAll() throws Exception;
 
 
 }

@@ -2,8 +2,8 @@ package SmartClass.DaoImp;
 
 import SmartClass.Dao.CourseDao;
 import SmartClass.POJO.Course;
-import SmartClass.dbutil.AfDbUtil;
-import SmartClass.dbutil.AfSqlWhere;
+import SmartClass.dbutil.DbUtil;
+import SmartClass.dbutil.SqlWhere;
 
 import java.util.List;
 
@@ -12,63 +12,49 @@ import java.util.List;
  */
 public class CourseDaoImp implements CourseDao
 {
-
     /*已测试*/
     @Override
     public void save(Course course) throws Exception
     {
-        AfDbUtil.save(course);
+        DbUtil.save(course);
     }
-
-
     /*已测试*/
     @Override
     public void deleteById(short courseId) throws Exception
     {
-        AfSqlWhere where = new AfSqlWhere();
+        SqlWhere where = new SqlWhere();
         where.addExact("id", courseId);
         String sql = "DELETE FROM course" + where.toString();
         System.out.println(sql);
-        AfDbUtil.execute(sql,true);
+        DbUtil.execute(sql,true);
     }
 
+    @Override
+    public void update(Course course) throws Exception
+    {
+        DbUtil.update(course);
+    }
+
+    /*已测试*/
     @Override
     public List<Course> getAll() throws Exception
     {
 
         String hql = "select c  from Course c";
-        List list = AfDbUtil.list(hql,false);
-
+        List list = DbUtil.list(hql,false);
         return list;
     }
 
+    /*已测试*/
     @Override
-    public void update(Course course)
+    public Course getById(short courseId) throws Exception
     {
-
+        SqlWhere where = new SqlWhere();
+        where.addExact("id", courseId);
+        String hql = "select c from Course c" + where.toString();
+        Course course = (Course) DbUtil.get(hql,false);
+        return course;
     }
 
-    @Override
-    public Course getById(int courseId)
-    {
-        return null;
-    }
 
-    @Override
-    public void updateCheckInFlag(int courseId, boolean startFlag)
-    {
-
-    }
-
-    @Override
-    public void updateAnswerFlag(int courseId, boolean startFlag)
-    {
-
-    }
-
-    @Override
-    public List getStudentsByCourseId(int courseId)
-    {
-        return null;
-    }
 }

@@ -1,11 +1,8 @@
 package SmartClass.DaoImp;
-
 import SmartClass.Dao.TeacherDao;
-import SmartClass.POJO.Student;
 import SmartClass.POJO.Teacher;
-import SmartClass.dbutil.AfDbUtil;
-import SmartClass.dbutil.AfSqlWhere;
-
+import SmartClass.dbutil.DbUtil;
+import SmartClass.dbutil.SqlWhere;
 import java.util.List;
 
 /**
@@ -17,34 +14,50 @@ public class TeacherDaoImp implements TeacherDao
     @Override
     public void save(Teacher teacher) throws Exception
     {
-        AfDbUtil.save(teacher);
+        DbUtil.save(teacher);
     }
 
+    /*老师和课程是一对多的关系，删除老师会删除老师名下所有的课程*/
+    /*已测试*/
     @Override
-    public void deleteById(short teacherId)
+    public void deleteById(short teacherId) throws Exception
     {
-
+        SqlWhere where = new SqlWhere();
+        where.addExact("id",teacherId);
+        String sql = "delete from teacher" + where.toString();
+        DbUtil.execute(sql,true);
     }
 
+    /*已测试*/
     @Override
     public void update(Teacher teacher)
     {
-
+        try
+        {
+            DbUtil.update(teacher);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
+    /*已测试*/
     @Override
     public Teacher getById(short teacherId) throws Exception
     {
-        AfSqlWhere where = new AfSqlWhere();
+        SqlWhere where = new SqlWhere();
         where.addExact("id", teacherId);
         String hql = "select t from Teacher t" + where.toString();
-        Teacher teacher = (Teacher) AfDbUtil.get(hql,false);
+        Teacher teacher = (Teacher) DbUtil.get(hql,false);
         return teacher;
     }
 
+    /*已测试*/
     @Override
-    public List<Teacher> getAll()
+    public List<Teacher> getAll() throws Exception
     {
-        return null;
+        String hql = "select t from Teacher t";
+        List result = DbUtil.list(hql,false);
+        return result;
     }
 }

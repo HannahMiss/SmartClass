@@ -4,12 +4,9 @@ import SmartClass.Dao.CourseDao;
 import SmartClass.DaoImp.CourseDaoImp;
 import SmartClass.DaoImp.StudentDaoImp;
 import SmartClass.DaoImp.TeacherDaoImp;
-import SmartClass.HibernateSessionFactory;
 import SmartClass.POJO.Course;
 import SmartClass.POJO.Student;
 import SmartClass.POJO.Teacher;
-import SmartClass.dbutil.AfDbUtil;
-import org.hibernate.Session;
 import org.junit.Test;
 
 import java.util.HashSet;

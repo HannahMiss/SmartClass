@@ -3,7 +3,7 @@ package SmartClass.dbutil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AfSqlWhere
+public class SqlWhere
 {
 	ArrayList<String> conditions = new ArrayList<String>();
 	
@@ -12,18 +12,22 @@ public class AfSqlWhere
 		conditions.add(condition);
 	}
 
+	// 字符串值 比较
 	public void addExact(String colName, String colValue)
 	{
 		conditions.add( colName + "='" + colValue + "'");
 	}
+	//整数值	比较
 	public void addExact(String colName, int colValue)
 	{
 		conditions.add( colName + "=" + colValue + "");
 	}
+	//长整形比较
 	public void addExact(String colName, Long colValue)
 	{
 		conditions.add( colName + "=" + colValue + "");
 	}
+	//模糊匹配
 	public void addLike(String colName, String colValue)
 	{
 		conditions.add( colName + " LIKE '%" + colValue + "%'");

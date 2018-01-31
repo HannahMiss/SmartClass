@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class AfDbUtil
+public class DbUtil
 {
 	public static Timestamp now () 
 	{

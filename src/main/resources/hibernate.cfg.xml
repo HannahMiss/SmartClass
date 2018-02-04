@@ -16,9 +16,6 @@
         <property name="connection.url">jdbc:mysql://localhost:3306/smartclasstest</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 
-
-        <property name="connection.username">root</property>
-        <property name="connection.password">hubiao</property>
         <!--
         <property name="connection.username">root</property>
         <property name="connection.password">hubiao</property>
@@ -43,5 +40,8 @@
         <mapping class="SmartClass.POJO.Course"/>
         <mapping class="SmartClass.POJO.Student"/>
         <mapping class="SmartClass.POJO.Teacher"/>
+        <mapping class="SmartClass.POJO.Sgininfo"/>
+        <mapping class="SmartClass.POJO.Communication"/>
+        <mapping class="SmartClass.POJO.Answer"/>
     </session-factory>
 </hibernate-configuration>

@@ -21,4 +21,6 @@ public interface CourseDao
 
     /*根据id得到课程信息*/
     Course getById(short courseId) throws Exception;
+
+
 }

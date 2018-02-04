@@ -21,46 +21,9 @@ public class CourseDaoImpTest
     @Test
     public void testSave()
     {
+        Course course = new Course();
+        course.setCourseName("计算机通信新技术");
 
-        try
-        {
-            StudentDaoImp studentDaoImp = new StudentDaoImp();
-            TeacherDaoImp teacherDaoImp = new TeacherDaoImp();
-            Teacher teacher = teacherDaoImp.getById((short)1030);
-
-//            Teacher teacher = new Teacher();
-//            teacher.setCode("20171007");
-//            teacher.setName("dai");
-//            teacher.setPassword("111100");
-
-            Course course = new Course();
-            course.setCourseName("计算机网络c班");
-            course.setAnswerFlag((byte)0);
-            course.setCheckinFlag((byte)0);
-            course.setTeacherByTeacherId(teacher);
-
-            Student student1 = new Student();
-            student1.setCode("10002");
-            student1.setName("小王2");
-            student1.setPassword("123456");
-
-            Student student2 = new Student();
-            student2.setCode("10003");
-            student2.setName("老王3");
-            student2.setPassword("123456");
-
-//            Student student1 =  studentDaoImp.getById((short)1014);
-            HashSet<Student> stus = new HashSet<Student>();
-            stus.add(student1);
-            stus.add(student2);
-            course.setStudents(stus);
-            courseDaoImp.save(course);
-            System.out.println("hello");
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
 

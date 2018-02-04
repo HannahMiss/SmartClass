@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 31/01/2018 20:46:37
+ Date: 04/02/2018 12:04:09
 */
 
 SET NAMES utf8mb4;
@@ -32,9 +32,30 @@ CREATE TABLE `administrator`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1001 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of administrator
+-- Table structure for answer
 -- ----------------------------
-INSERT INTO `administrator` VALUES (1000, 'admin', '123456', '2018-01-22 16:15:47', '2018-01-22 16:16:19');
+DROP TABLE IF EXISTS `answer`;
+CREATE TABLE `answer`  (
+  `courseId` smallint(6) NOT NULL,
+  `studentId` int(10) NOT NULL,
+  `opt` smallint(6) NOT NULL COMMENT '0:代表未选择；1,2,3,4分别代表A,B,C,D',
+  PRIMARY KEY (`courseId`, `studentId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for communication
+-- ----------------------------
+DROP TABLE IF EXISTS `communication`;
+CREATE TABLE `communication`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `courseId` smallint(6) NOT NULL,
+  `studenId` int(10) NOT NULL,
+  `flag` tinyint(4) NOT NULL COMMENT '0.代表这条记录是问题。1.代表这条记录是反馈。',
+  `descr` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `timeCreated` datetime(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `answered` tinyint(4) NOT NULL COMMENT '0:代表未回答。1:代表问题已经回答',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1006 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course
@@ -46,20 +67,25 @@ CREATE TABLE `course`  (
   `teacherId` smallint(6) NOT NULL,
   `checkinFlag` tinyint(1) NOT NULL,
   `answerFlag` tinyint(1) NOT NULL,
-  `timeCreated` datetime(0) NULL DEFAULT NULL,
-  `timeModified` datetime(0) NULL DEFAULT NULL,
+  `timeCreated` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `timeModified` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `tid`(`teacherId`) USING BTREE,
   CONSTRAINT `tid` FOREIGN KEY (`teacherId`) REFERENCES `teacher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1067 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of course
+-- Table structure for sgininfo
 -- ----------------------------
-INSERT INTO `course` VALUES (1059, '计算机网络d班', 1030, 0, 0, NULL, NULL);
-INSERT INTO `course` VALUES (1063, '计算机网络a班', 1030, 0, 0, NULL, NULL);
-INSERT INTO `course` VALUES (1065, '计算机网络b班', 1030, 0, 0, NULL, NULL);
-INSERT INTO `course` VALUES (1066, '计算机网络c班', 1030, 0, 0, NULL, NULL);
+DROP TABLE IF EXISTS `sgininfo`;
+CREATE TABLE `sgininfo`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `courseId` smallint(6) NOT NULL,
+  `studentCode` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `times` smallint(6) NOT NULL COMMENT '签到次数：从1开始',
+  `timeCreated` datetime(0) NOT NULL COMMENT '签到的时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1012 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for student
@@ -77,13 +103,6 @@ CREATE TABLE `student`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1026 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of student
--- ----------------------------
-INSERT INTO `student` VALUES (1023, '10001', '小王', '123456', NULL, NULL);
-INSERT INTO `student` VALUES (1024, '10002', '小王2', '123456', NULL, NULL);
-INSERT INTO `student` VALUES (1025, '10003', '老王3', '123456', NULL, NULL);
-
--- ----------------------------
 -- Table structure for student_course
 -- ----------------------------
 DROP TABLE IF EXISTS `student_course`;
@@ -95,13 +114,6 @@ CREATE TABLE `student_course`  (
   CONSTRAINT `course_id` FOREIGN KEY (`courseId`) REFERENCES `course` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `student_id` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of student_course
--- ----------------------------
-INSERT INTO `student_course` VALUES (1023, 1065);
-INSERT INTO `student_course` VALUES (1024, 1066);
-INSERT INTO `student_course` VALUES (1025, 1066);
 
 -- ----------------------------
 -- Table structure for teacher
@@ -116,11 +128,6 @@ CREATE TABLE `teacher`  (
   `timeModified` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `tcode`(`code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1032 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of teacher
--- ----------------------------
-INSERT INTO `teacher` VALUES (1030, '20171007', 'dai', '111100', NULL, NULL);
+) ENGINE = InnoDB AUTO_INCREMENT = 1031 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

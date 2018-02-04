@@ -12,6 +12,7 @@ public class SqlWhere
 		conditions.add(condition);
 	}
 
+	/**/
 	// 字符串值 比较
 	public void addExact(String colName, String colValue)
 	{
@@ -27,6 +28,8 @@ public class SqlWhere
 	{
 		conditions.add( colName + "=" + colValue + "");
 	}
+
+
 	//模糊匹配
 	public void addLike(String colName, String colValue)
 	{
@@ -66,7 +69,30 @@ public class SqlWhere
 		sql += ") ";
 		conditions.add(sql);
 	}
-	
+
+	/*添加大于或等于查询条件*/
+	// 字符串
+	public void addGtE(String colName, String colValue)
+	{
+		conditions.add( colName + ">='" + colValue + "'");
+	}
+	//整数值	比较
+	public void addGtE(String colName, int colValue)
+	{
+		conditions.add( colName + ">=" + colValue + "");
+	}
+
+	/*添加小于或等于查询条件*/
+	// 字符串
+	public void addLtE(String colName, String colValue)
+	{
+		conditions.add( colName + "<='" + colValue + "'");
+	}
+	//整数值	比较
+	public void addLtE(String colName, int colValue)
+	{
+		conditions.add(colName + "<=" + colValue + "");
+	}
 	@Override
 	public String toString()
 	{
@@ -75,7 +101,7 @@ public class SqlWhere
 		String where = " where ";
 		for(int i=0; i<conditions.size() ;i++)
 		{
-			if(i != 0) where += " AND ";
+			if(i != 0) where += " and ";
 			where += " (" + conditions.get(i) + ") ";
 		}
 		return where;

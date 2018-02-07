@@ -52,6 +52,16 @@ public class TeacherDaoImp implements TeacherDao
         return teacher;
     }
 
+    @Override
+    public Teacher getByUserName(String username) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("code", username);
+        String hql = "select t from Teacher t" + where.toString();
+        Teacher teacher = (Teacher) DbUtil.get(hql,false);
+        return teacher;
+    }
+
     /*已测试*/
     @Override
     public List<Teacher> getAll() throws Exception

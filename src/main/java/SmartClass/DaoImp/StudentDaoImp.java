@@ -44,6 +44,16 @@ public class StudentDaoImp implements StudentDao
     }
 
     @Override
+    public Student getByCode(String studentCode) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("code", studentCode);
+        String hql = "select s from Student s" + where.toString();
+        Student student = (Student) DbUtil.get(hql,false);
+        return student;
+    }
+
+    @Override
     public List<Student> getAll() throws Exception
     {
 

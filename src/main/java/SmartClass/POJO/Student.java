@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by 73681 on 2018/1/30.
  */
 @Entity
-public class Student
+public class Student implements java.io.Serializable
 {
     private int id;
     private String code;
@@ -126,7 +126,7 @@ public class Student
         return result;
     }
 
-    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "students", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     public Set<Course> getCourses()
     {
         return courses;

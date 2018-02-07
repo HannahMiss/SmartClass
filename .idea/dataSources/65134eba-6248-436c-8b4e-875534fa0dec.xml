@@ -71,109 +71,128 @@
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="34" parent="18" name="studentId">
-      <Position>2</Position>
-      <DataType>int(10)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="35" parent="18" name="opt">
+    <column id="34" parent="18" name="opt">
       <Position>3</Position>
       <Comment>0:代表未选择；1,2,3,4分别代表A,B,C,D</Comment>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="36" parent="18" name="PRIMARY">
+    <column id="35" parent="18" name="studentCode">
+      <Position>2</Position>
+      <DataType>varchar(32)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="36" parent="18" name="sCode">
+      <ColNames>studentCode</ColNames>
+    </index>
+    <key id="37" parent="18" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>courseId
-studentId</ColNames>
+studentCode</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="37" parent="19" name="courseId">
+    <foreign-key id="38" parent="18" name="cId">
+      <ColNames>courseId</ColNames>
+      <RefSchemaName>smartclasstest</RefSchemaName>
+      <RefTableName>course</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="39" parent="18" name="sCode">
+      <ColNames>studentCode</ColNames>
+      <RefSchemaName>smartclasstest</RefSchemaName>
+      <RefTableName>student</RefTableName>
+      <RefColNames>code</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="40" parent="19" name="courseId">
       <Position>2</Position>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="38" parent="19" name="studenId">
+    <column id="41" parent="19" name="studenId">
       <Position>3</Position>
       <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="39" parent="19" name="flag">
+    <column id="42" parent="19" name="flag">
       <Position>4</Position>
       <Comment>0.代表这条记录是问题。1.代表这条记录是反馈。</Comment>
       <DataType>tinyint(4)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="40" parent="19" name="descr">
+    <column id="43" parent="19" name="descr">
       <Position>5</Position>
       <DataType>text|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="41" parent="19" name="timeCreated">
+    <column id="44" parent="19" name="timeCreated">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="42" parent="19" name="answered">
+    <column id="45" parent="19" name="answered">
       <Position>7</Position>
       <Comment>0:代表未回答。1:代表问题已经回答</Comment>
       <DataType>tinyint(4)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="43" parent="19" name="id">
+    <column id="46" parent="19" name="id">
       <Position>1</Position>
       <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <key id="44" parent="19" name="PRIMARY">
+    <key id="47" parent="19" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="45" parent="20" name="id">
+    <column id="48" parent="20" name="id">
       <Position>1</Position>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="46" parent="20" name="courseName">
+    <column id="49" parent="20" name="courseName">
       <Position>2</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="47" parent="20" name="teacherId">
+    <column id="50" parent="20" name="teacherId">
       <Position>3</Position>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="48" parent="20" name="checkinFlag">
+    <column id="51" parent="20" name="checkinFlag">
       <Position>4</Position>
       <DataType>tinyint(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="49" parent="20" name="answerFlag">
+    <column id="52" parent="20" name="answerFlag">
       <Position>5</Position>
       <DataType>tinyint(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="50" parent="20" name="timeCreated">
+    <column id="53" parent="20" name="timeCreated">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="51" parent="20" name="timeModified">
+    <column id="54" parent="20" name="timeModified">
       <Position>7</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <index id="52" parent="20" name="tid">
+    <index id="55" parent="20" name="tid">
       <ColNames>teacherId</ColNames>
     </index>
-    <key id="53" parent="20" name="PRIMARY">
+    <key id="56" parent="20" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="54" parent="20" name="tid">
+    <foreign-key id="57" parent="20" name="tid">
       <ColNames>teacherId</ColNames>
       <RefSchemaName>smartclasstest</RefSchemaName>
       <RefTableName>teacher</RefTableName>
@@ -181,151 +200,151 @@ studentId</ColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="55" parent="21" name="courseId">
+    <column id="58" parent="21" name="courseId">
       <Position>2</Position>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="56" parent="21" name="studentCode">
+    <column id="59" parent="21" name="studentCode">
       <Position>3</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="57" parent="21" name="times">
+    <column id="60" parent="21" name="times">
       <Position>4</Position>
       <Comment>签到次数：从1开始</Comment>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="58" parent="21" name="timeCreated">
+    <column id="61" parent="21" name="timeCreated">
       <Position>5</Position>
       <Comment>签到的时间</Comment>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="59" parent="21" name="id">
+    <column id="62" parent="21" name="id">
       <Position>1</Position>
       <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <key id="60" parent="21" name="PRIMARY">
+    <key id="63" parent="21" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="61" parent="22" name="id">
+    <column id="64" parent="22" name="id">
       <Position>1</Position>
       <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="62" parent="22" name="code">
+    <column id="65" parent="22" name="code">
       <Position>2</Position>
       <DataType>varchar(32)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="63" parent="22" name="name">
+    <column id="66" parent="22" name="name">
       <Position>3</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="64" parent="22" name="password">
+    <column id="67" parent="22" name="password">
       <Position>4</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="65" parent="22" name="timerCreated">
+    <column id="68" parent="22" name="timerCreated">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="66" parent="22" name="timerModified">
+    <column id="69" parent="22" name="timerModified">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <index id="67" parent="22" name="studentcode">
+    <index id="70" parent="22" name="studentcode">
       <ColNames>code</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="68" parent="22" name="PRIMARY">
+    <key id="71" parent="22" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="69" parent="22" name="studentcode">
+    <key id="72" parent="22" name="studentcode">
       <ColNames>code</ColNames>
       <UnderlyingIndexName>studentcode</UnderlyingIndexName>
     </key>
-    <column id="70" parent="23" name="studentId">
+    <column id="73" parent="23" name="studentId">
       <Position>1</Position>
       <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="71" parent="23" name="courseId">
+    <column id="74" parent="23" name="courseId">
       <Position>2</Position>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="72" parent="23" name="couseid">
+    <index id="75" parent="23" name="couseid">
       <ColNames>courseId</ColNames>
     </index>
-    <key id="73" parent="23" name="PRIMARY">
+    <key id="76" parent="23" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>studentId
 courseId</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="74" parent="23" name="student_id">
+    <foreign-key id="77" parent="23" name="student_id">
       <ColNames>studentId</ColNames>
       <RefSchemaName>smartclasstest</RefSchemaName>
       <RefTableName>student</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="75" parent="23" name="course_id">
+    <foreign-key id="78" parent="23" name="course_id">
       <ColNames>courseId</ColNames>
       <RefSchemaName>smartclasstest</RefSchemaName>
       <RefTableName>course</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="76" parent="24" name="id">
+    <column id="79" parent="24" name="id">
       <Position>1</Position>
       <DataType>smallint(6)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="77" parent="24" name="code">
+    <column id="80" parent="24" name="code">
       <Position>2</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="78" parent="24" name="name">
+    <column id="81" parent="24" name="name">
       <Position>3</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="79" parent="24" name="password">
+    <column id="82" parent="24" name="password">
       <Position>4</Position>
       <DataType>varchar(64)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="80" parent="24" name="timeCreated">
+    <column id="83" parent="24" name="timeCreated">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="81" parent="24" name="timeModified">
+    <column id="84" parent="24" name="timeModified">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <index id="82" parent="24" name="tcode">
+    <index id="85" parent="24" name="tcode">
       <ColNames>code</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="83" parent="24" name="PRIMARY">
+    <key id="86" parent="24" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="84" parent="24" name="tcode">
+    <key id="87" parent="24" name="tcode">
       <ColNames>code</ColNames>
       <UnderlyingIndexName>tcode</UnderlyingIndexName>
     </key>

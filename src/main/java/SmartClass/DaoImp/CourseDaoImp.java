@@ -1,9 +1,12 @@
 package SmartClass.DaoImp;
 
 import SmartClass.Dao.CourseDao;
+import SmartClass.HibernateSessionFactory;
 import SmartClass.POJO.Course;
 import SmartClass.dbutil.DbUtil;
 import SmartClass.dbutil.SqlWhere;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -54,6 +57,33 @@ public class CourseDaoImp implements CourseDao
         String hql = "select c from Course c" + where.toString();
         Course course = (Course) DbUtil.get(hql,false);
         return course;
+    }
+
+    @Override
+    public Course getByIdWithStudent(short courseId) throws Exception
+    {
+
+        Session dbss = HibernateSessionFactory.getSession();
+        try
+        {
+            List rawdata = null;
+            Course course = null;
+            rawdata = dbss.createQuery("select c from Course c where id=?")
+                    .setParameter(0,courseId)
+                    .list();
+            if(rawdata.size()  > 0)
+            {
+                course = (Course) rawdata.get(0);
+                int n = course.getStudents().size();
+                return course;
+            }
+
+        } finally
+        {
+            if (dbss != null)
+                dbss.close();
+        }
+        return null;
     }
 
 

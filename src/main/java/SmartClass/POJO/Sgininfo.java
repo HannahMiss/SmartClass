@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * Created by 73681 on 2018/2/3.
  */
 @Entity
-public class Sgininfo
+public class Sgininfo implements java.io.Serializable
 {
     private short courseId;
     private String studentCode;

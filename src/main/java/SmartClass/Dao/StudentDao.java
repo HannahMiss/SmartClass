@@ -22,6 +22,8 @@ public interface StudentDao
     /*根据id得到一个学生信息*/
     Student getById(int studentId) throws Exception;
 
+    /*根据id得到一个学生信息*/
+    Student getByCode(String studentCode) throws Exception;
 
     /*得到所有的学生信息*/
     List<Student> getAll() throws Exception;

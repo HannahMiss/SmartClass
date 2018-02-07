@@ -37,6 +37,17 @@ public class AnswerDaoImp implements AnswerDao
         return results;
     }
 
+    @Override
+    public List<String> getbyOpt(short courseId, short opt) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("courseId", courseId);
+        where.addExact("opt", opt);
+        String sql = "select studentCode from answer" + where.toString();
+        List results = DbUtil.list(sql,true);
+        return results;
+    }
+
     /*已测试*/
     @Override
     public void deleteByCourseId(short courseId) throws Exception
@@ -49,11 +60,11 @@ public class AnswerDaoImp implements AnswerDao
 
     /*已测试*/
     @Override
-    public void deleteAnswer(short courseId, int studentId) throws Exception
+    public void deleteAnswer(short courseId, String studentCode) throws Exception
     {
         SqlWhere where = new SqlWhere();
         where.addExact("courseId", courseId);
-        where.addExact("studentId", studentId);
+        where.addExact("studentCode", studentCode);
         String sql = "delete from answer" + where.toString();
         DbUtil.execute(sql,true);
     }

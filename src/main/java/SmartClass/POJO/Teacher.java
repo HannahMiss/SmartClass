@@ -9,7 +9,7 @@ import java.util.HashSet;
  * Created by 73681 on 2018/1/30.
  */
 @Entity
-public class Teacher
+public class Teacher implements java.io.Serializable
 {
     private short id;
     private String code;
@@ -123,7 +123,7 @@ public class Teacher
         return result;
     }
 
-    @OneToMany(mappedBy = "teacherByTeacherId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "teacherByTeacherId", fetch = FetchType.EAGER)
     public Collection<Course> getCoursesById()
     {
         return coursesById;

@@ -5,12 +5,12 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
- * Created by 73681 on 2018/2/3.
+ * Created by 73681 on 2018/2/7.
  */
 public class AnswerPK implements Serializable
 {
     private short courseId;
-    private int studentId;
+    private String studentCode;
 
     @Column(name = "courseId", nullable = false)
     @Id
@@ -24,16 +24,16 @@ public class AnswerPK implements Serializable
         this.courseId = courseId;
     }
 
-    @Column(name = "studentId", nullable = false)
+    @Column(name = "studentCode", nullable = false, length = 32)
     @Id
-    public int getStudentId()
+    public String getStudentCode()
     {
-        return studentId;
+        return studentCode;
     }
 
-    public void setStudentId(int studentId)
+    public void setStudentCode(String studentCode)
     {
-        this.studentId = studentId;
+        this.studentCode = studentCode;
     }
 
     @Override
@@ -45,7 +45,8 @@ public class AnswerPK implements Serializable
         AnswerPK answerPK = (AnswerPK) o;
 
         if (courseId != answerPK.courseId) return false;
-        if (studentId != answerPK.studentId) return false;
+        if (studentCode != null ? !studentCode.equals(answerPK.studentCode) : answerPK.studentCode != null)
+            return false;
 
         return true;
     }
@@ -54,7 +55,7 @@ public class AnswerPK implements Serializable
     public int hashCode()
     {
         int result = (int) courseId;
-        result = 31 * result + studentId;
+        result = 31 * result + (studentCode != null ? studentCode.hashCode() : 0);
         return result;
     }
 }

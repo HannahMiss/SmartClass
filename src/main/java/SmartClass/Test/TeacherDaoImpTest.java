@@ -23,9 +23,9 @@ public class TeacherDaoImpTest
     public void testSave()
     {
         Teacher teacher = new Teacher();
-        teacher.setCode("20171002");
-        teacher.setName("yasuo");
-        teacher.setPassword("1002");
+        teacher.setCode("66661002");
+        teacher.setName("戴老师");
+        teacher.setPassword("123456");
 
         try
         {

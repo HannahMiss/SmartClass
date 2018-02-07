@@ -24,6 +24,9 @@ public interface TeacherDao
     /*根据id得到一个老师的信息*/
     Teacher getById(short teacherId) throws Exception;
 
+    /*根据username查询一个老师*/
+    Teacher getByUserName(String username) throws Exception;
+
     /*得到所有的老师的信息*/
     List<Teacher> getAll() throws Exception;
 

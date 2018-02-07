@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * Created by 73681 on 2018/1/30.
  */
 @Entity
-public class Administrator
+public class Administrator implements java.io.Serializable
 {
     private int id;
     private String username;

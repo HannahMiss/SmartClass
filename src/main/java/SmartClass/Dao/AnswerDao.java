@@ -18,11 +18,14 @@ public interface AnswerDao
     /*得到某门课的答题信息*/
     List<Answer> getByCourseId(short courseId) throws Exception;
 
+    /*得到选某一个选项的所有学号*/
+    List<String> getbyOpt(short courseId,short opt) throws Exception;
+
     /*根据课程id，删除某个课程的答题信息*/
     void deleteByCourseId(short courseId) throws Exception;
 
     /*删除课程某个学生的答题信息*/
-    void deleteAnswer(short courseId, int studentId) throws Exception;
+    void deleteAnswer(short courseId, String studentCode) throws Exception;
 
     /*删除表中所有的数据*/
     void deleteAll() throws Exception;

@@ -91,7 +91,7 @@ public class DbUtil
 	}
 	
 	// 获取唯一一行 (需自己构造SQL语句, 并注明是否HQL)
-	public static Object get (String sql, boolean nativeSQL) throws Exception
+	public static Object get (String sql, boolean nativeSQL)throws Exception
 	{
 		Session dbss = HibernateSessionFactory.getSession();
 		try

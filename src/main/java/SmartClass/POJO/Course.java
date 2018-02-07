@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by 73681 on 2018/1/30.
  */
 @Entity
-public class Course
+public class Course implements java.io.Serializable
 {
     private short id;
     private String courseName;
@@ -126,7 +126,7 @@ public class Course
         return result;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "teacherId", referencedColumnName = "id", nullable = false)
     public Teacher getTeacherByTeacherId()
     {

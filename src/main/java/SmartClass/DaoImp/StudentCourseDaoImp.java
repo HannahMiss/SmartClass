@@ -28,4 +28,13 @@ public class StudentCourseDaoImp implements StudentCourseDao
         String sql = "delete from student_course" + where.toString();
         DbUtil.execute(sql,true);
     }
+
+    @Override
+    public void deleteByCourseId(short courseId) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("courseId",courseId);
+        String sql = "delete from student_course" + where.toString();
+        DbUtil.execute(sql,true);
+    }
 }

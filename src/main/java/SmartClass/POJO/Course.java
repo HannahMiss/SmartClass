@@ -1,6 +1,7 @@
 package SmartClass.POJO;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,6 +16,8 @@ public class Course implements java.io.Serializable
     private short id;
     private String courseName;
     private byte checkinFlag;
+    private short checkinTime;
+    private Date checkinDate;
     private byte answerFlag;
     private Timestamp timeCreated;
     private Timestamp timeModified;
@@ -59,6 +62,17 @@ public class Course implements java.io.Serializable
         this.checkinFlag = checkinFlag;
     }
 
+    @Basic
+    @Column(name = "checkinTime",nullable = false)
+    public short getCheckinTime() {return checkinTime;}
+
+    public void setCheckinTime(short checkinTime) {this.checkinTime = checkinTime;}
+
+    @Basic
+    @Column(name = "checkinDate",nullable = false)
+    public Date getCheckinDate() {return checkinDate;}
+
+    public void setCheckinDate(Date checkinDate) {this.checkinDate = checkinDate;}
     @Basic
     @Column(name = "answerFlag", nullable = false)
     public byte getAnswerFlag()
@@ -139,7 +153,7 @@ public class Course implements java.io.Serializable
     }
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
             name = "student_course",
             joinColumns = {@JoinColumn(name = "courseId",referencedColumnName = "id")},

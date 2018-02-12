@@ -1,14 +1,18 @@
 package SmartClass.Dao;
 
 import SmartClass.POJO.Answer;
+import SmartClass.POJO.Student;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by 73681 on 2018/2/3.
  */
 public interface AnswerDao
 {
+    /*初始化*/
+    void  addByCourseId(short courseId, Set<Student> stuSet);
     /*添加*/
     void add(Answer answer) throws Exception;
 

@@ -1,4 +1,4 @@
-package SmartClass.Controller;
+package SmartClass.Resource;
 
 import SmartClass.Dao.AdminDao;
 import SmartClass.Dao.CourseDao;
@@ -7,9 +7,7 @@ import SmartClass.DaoImp.AdminDaoImp;
 import SmartClass.DaoImp.CourseDaoImp;
 import SmartClass.DaoImp.TeacherDaoImp;
 import SmartClass.POJO.Administrator;
-import SmartClass.POJO.Course;
-import SmartClass.POJO.Teacher;
-import SmartClass.dbutil.DbUtil;
+import SmartClass.tool.HttpSessionUtil;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +22,10 @@ import java.util.Map;
  * Created by 73681 on 2018/2/4.
  */
 @Path("admin")
-public class AdminController
+public class AdminResource
 {
 
+    private final static String CHARSET_UTF_8 = "charset=utf-8";
     private AdminDao adminDao = new AdminDaoImp();
     private CourseDao courseDao = new CourseDaoImp();
     private TeacherDao teacherDao = new TeacherDaoImp();
@@ -34,7 +33,7 @@ public class AdminController
     /*处理管理员登录功能*/
     @Path("login")
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> login(String reqText, @Context HttpServletRequest request)
     {
 
@@ -73,25 +72,50 @@ public class AdminController
         return reply;
     }
 
+    /*退出登录*/
+    /*处理管理员登录功能*/
+    @Path("exit")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
+    public Map<String,Object> exit(@Context HttpServletRequest request)
+    {
+
+        Map reply = new HashMap<String,Object>();
+
+        if (HttpSessionUtil.islogin(request,"role","admin"))
+        {
+            HttpSession session = request.getSession();
+            /*将session中对应的属性去掉*/
+            session.removeAttribute("role");
+            session.removeAttribute("user");
+            reply.put("status", 200);
+            reply.put("msg","OK");
+        }else
+        {
+            reply.put("status", 1000);
+            reply.put("msg","此操作是只能由管理员操作，请先登录！");
+        }
+        return reply;
+    }
+
+
     @Path("islogin")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @POST
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> isLogin(@Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
-        HttpSession session = request.getSession();
-        String role = (String) session.getAttribute("role");
-        if (role.equals("admin"))
+        if (HttpSessionUtil.islogin(request,"role","admin"))
         {
-            Administrator administrator = (Administrator)session.getAttribute("user");
+            Administrator administrator = (Administrator)HttpSessionUtil.get(request,"user");
             reply.put("status", 200);
             reply.put("msg","OK");
-            reply.put("user",administrator);
+            reply.put("username",administrator.getUsername());
             return reply;
         }else
         {
             reply.put("status", 1000);
-            reply.put("msg","未登录");
+            reply.put("msg","此操作是只能由管理员操作，请先登录！");
         }
         return reply;
     }

@@ -6,6 +6,7 @@ import SmartClass.POJO.Communication;
 import SmartClass.dbutil.DbUtil;
 import org.junit.Test;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -21,38 +22,6 @@ public class CommunicationDaoImpTest
     @Test
     public void addTest()
     {
-        Communication communication = new Communication();
-        communication.setCourseId((short)1000);
-        communication.setStudenId(1000);
-        communication.setFlag((byte)0);
-        communication.setAnswered((byte)0);
-        communication.setDescr("电路交换的优点是什么？");
-        communication.setTimeCreated(DbUtil.now());
-
-        Communication communication1 = new Communication();
-        communication1.setCourseId((short)1000);
-        communication1.setStudenId(1002);
-        communication1.setFlag((byte)0);
-        communication1.setAnswered((byte)1);
-        communication1.setDescr("虚电路是什么？");
-        communication1.setTimeCreated(DbUtil.now());
-
-        Communication communication2 = new Communication();
-        communication2.setCourseId((short)1001);
-        communication2.setStudenId(1000);
-        communication2.setFlag((byte)1);
-        communication2.setDescr("讲太快");
-        communication2.setTimeCreated(DbUtil.now());
-
-        try
-        {
-            communicationDaoImp.add(communication);
-            communicationDaoImp.add(communication1);
-            communicationDaoImp.add(communication2);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
     }
 
@@ -60,14 +29,16 @@ public class CommunicationDaoImpTest
     @Test
     public void setAnsweredTest()
     {
-        try
-        {
-            communicationDaoImp.setAnswered(1000);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//           // communicationDaoImp.setAnswered(1000);
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
+        Date date = new Date(System.currentTimeMillis());
+        System.out.println(date);
     }
 
 

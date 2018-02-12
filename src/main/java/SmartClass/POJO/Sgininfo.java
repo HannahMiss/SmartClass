@@ -4,19 +4,20 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * Created by 73681 on 2018/2/3.
  */
 @Entity
-public class Sgininfo implements java.io.Serializable
+public class Sgininfo implements Serializable
 {
+    private int id;
     private short courseId;
     private String studentCode;
     private short times;
     private Timestamp timeCreated;
-    private int id;
 
     @Basic
     @Column(name = "courseId", nullable = false)

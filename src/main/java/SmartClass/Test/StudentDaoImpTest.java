@@ -11,6 +11,7 @@ import SmartClass.POJO.Student;
 import SmartClass.dbutil.DbUtil;
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,36 +25,63 @@ public class StudentDaoImpTest
     @Test
     public void saveTest()
     {
+//        try
+//        {
+//            String name = "xiaoming";
+//            String code = "2017140426";
+//            short courseId = 1068;
+//            Course course = courseDao.getById(courseId);
+//            Student student = studentDao.getByCode(code);
+//            if (student != null)                /*如果这个学生已经在数据库中，更新*/
+//            {
+//                student.setName(name);
+//                student.setCode(code);
+//                student.setPassword(code.substring(code.length() - 6));
+//                student.getCourses().add(course);
+//                student.setTimerModified(DbUtil.now());
+//                studentDao.update(student);
+//            } else                           /*如果这个学生没在数据库中，new一个对象并保存*/
+//            {
+//                student = new Student();
+//                student.setName(name);
+//                student.setCode(code);
+//                student.setPassword(code.substring(code.length() - 6));
+//                student.getCourses().add(course);
+//                student.setTimerCreated(DbUtil.now());
+//                student.setTimerModified(DbUtil.now());
+//                studentDao.save(student);
+//            }
+//            studentCourseDao.add(courseId,student.getId());
+//        }catch (Exception e)
+//        {
+//
+//        }
+
+        Set<Student> students = new HashSet<Student>();
+        Student student = new Student();
+        student.setName("111");
+        student.setCode("2017333");
+        student.setPassword("333");
+        student.setTimerModified(DbUtil.now());
+        student.setTimerCreated(DbUtil.now());
+        students.add(student);
+
+        Student student1 = new Student();
+        student1.setName("111");
+        student1.setCode("2017222");
+        student1.setPassword("222");
+        student1.setTimerModified(DbUtil.now());
+        student1.setTimerCreated(DbUtil.now());
+        students.add(student1);
+
         try
         {
-            String name = "xiaoming";
-            String code = "2017140426";
-            short courseId = 1068;
-            Course course = courseDao.getById(courseId);
-            Student student = studentDao.getByCode(code);
-            if (student != null)                /*如果这个学生已经在数据库中，更新*/
-            {
-                student.setName(name);
-                student.setCode(code);
-                student.setPassword(code.substring(code.length() - 6));
-                student.getCourses().add(course);
-                student.setTimerModified(DbUtil.now());
-                studentDao.update(student);
-            } else                           /*如果这个学生没在数据库中，new一个对象并保存*/
-            {
-                student = new Student();
-                student.setName(name);
-                student.setCode(code);
-                student.setPassword(code.substring(code.length() - 6));
-                student.getCourses().add(course);
-                student.setTimerCreated(DbUtil.now());
-                student.setTimerModified(DbUtil.now());
-                studentDao.save(student);
-            }
-            studentCourseDao.add(courseId,student.getId());
-        }catch (Exception e)
+            Course course = courseDao.getById((short)1068);
+            course.setStudents(students);
+            courseDao.update(course);
+        } catch (Exception e)
         {
-
+            e.printStackTrace();
         }
     }
 

@@ -7,18 +7,18 @@ import javax.persistence.Id;
 import java.sql.Timestamp;
 
 /**
- * Created by 73681 on 2018/2/4.
+ * Created by 73681 on 2018/2/9.
  */
 @Entity
-public class Communication implements java.io.Serializable
+public class Communication
 {
     private short courseId;
-    private int studenId;
     private byte flag;
     private String descr;
     private Timestamp timeCreated;
     private byte answered;
     private int id;
+    private String studentCode;
 
     @Basic
     @Column(name = "courseId", nullable = false)
@@ -30,18 +30,6 @@ public class Communication implements java.io.Serializable
     public void setCourseId(short courseId)
     {
         this.courseId = courseId;
-    }
-
-    @Basic
-    @Column(name = "studenId", nullable = false)
-    public int getStudenId()
-    {
-        return studenId;
-    }
-
-    public void setStudenId(int studenId)
-    {
-        this.studenId = studenId;
     }
 
     @Basic
@@ -104,6 +92,18 @@ public class Communication implements java.io.Serializable
         this.id = id;
     }
 
+    @Basic
+    @Column(name = "studentCode", nullable = false, length = 10)
+    public String getStudentCode()
+    {
+        return studentCode;
+    }
+
+    public void setStudentCode(String studentCode)
+    {
+        this.studentCode = studentCode;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -113,12 +113,12 @@ public class Communication implements java.io.Serializable
         Communication that = (Communication) o;
 
         if (courseId != that.courseId) return false;
-        if (studenId != that.studenId) return false;
         if (flag != that.flag) return false;
         if (answered != that.answered) return false;
         if (id != that.id) return false;
         if (descr != null ? !descr.equals(that.descr) : that.descr != null) return false;
         if (timeCreated != null ? !timeCreated.equals(that.timeCreated) : that.timeCreated != null) return false;
+        if (studentCode != null ? !studentCode.equals(that.studentCode) : that.studentCode != null) return false;
 
         return true;
     }
@@ -127,12 +127,12 @@ public class Communication implements java.io.Serializable
     public int hashCode()
     {
         int result = (int) courseId;
-        result = 31 * result + studenId;
         result = 31 * result + (int) flag;
         result = 31 * result + (descr != null ? descr.hashCode() : 0);
         result = 31 * result + (timeCreated != null ? timeCreated.hashCode() : 0);
         result = 31 * result + (int) answered;
         result = 31 * result + id;
+        result = 31 * result + (studentCode != null ? studentCode.hashCode() : 0);
         return result;
     }
 }

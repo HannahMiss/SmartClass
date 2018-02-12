@@ -1,20 +1,20 @@
-package SmartClass.Controller;
+package SmartClass.Resource;
 
 import SmartClass.Dao.AnswerDao;
 import SmartClass.Dao.CourseDao;
+import SmartClass.Dao.SgininfoDao;
 import SmartClass.Dao.TeacherDao;
 import SmartClass.DaoImp.AnswerDaoImp;
 import SmartClass.DaoImp.CourseDaoImp;
+import SmartClass.DaoImp.SgininfoDaoImp;
 import SmartClass.DaoImp.TeacherDaoImp;
 import SmartClass.POJO.Course;
+import SmartClass.POJO.Sgininfo;
 import SmartClass.POJO.Teacher;
 import SmartClass.dbutil.DbUtil;
 import SmartClass.tool.HttpSessionUtil;
-import netscape.javascript.JSObject;
-import org.hibernate.Session;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
@@ -34,12 +34,20 @@ public class TeacherResource
     private TeacherDao teacherDao = new TeacherDaoImp();
     private CourseDao courseDao = new CourseDaoImp();
     private AnswerDao answerDao = new AnswerDaoImp();
+    private SgininfoDao sgininfoDao = new SgininfoDaoImp();
     /*添加老师*/
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> addteacher(String reqText)
+    public Map<String,Object> addteacher(String reqText,@Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
+        /*管理员是否登录*/
+        if (!HttpSessionUtil.islogin(request,"role","admin"))
+        {
+            reply.put("status", 1000);
+            reply.put("msg","此操作是只能由管理员执行，请先登录！");
+            return reply;
+        }
         /*处理请求*/
         JSONObject jsReq = new JSONObject(reqText);
         String name = jsReq.getString("teacherName");
@@ -73,10 +81,17 @@ public class TeacherResource
     @Path("{teacherId}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> deleteTeacher(@PathParam("teacherId") short teacherId)
+    public Map<String,Object> deleteTeacher(@PathParam("teacherId") short teacherId,
+                                            @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
-
+        /*管理员是否登录*/
+        if (!HttpSessionUtil.islogin(request,"role","admin"))
+        {
+            reply.put("status", 1000);
+            reply.put("msg","此操作是只能由管理员执行，请先登录！");
+            return reply;
+        }
         try
         {
             /*删除*/
@@ -99,9 +114,17 @@ public class TeacherResource
     @Path("{teacherId}")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> updataTeacher(@PathParam("teacherId") short teacherId,String reqText)
+    public Map<String,Object> updataTeacher(@PathParam("teacherId") short teacherId,String reqText,
+                                            @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
+        /*管理员是否登录*/
+        if (!HttpSessionUtil.islogin(request,"role","admin"))
+        {
+            reply.put("status", 1000);
+            reply.put("msg","此操作是只能由管理员执行，请先登录！");
+            return reply;
+        }
         /*处理请求*/
         JSONObject jsReq = new JSONObject(reqText);
         String name = jsReq.getString("teacherName");
@@ -132,9 +155,16 @@ public class TeacherResource
     /*得到所有老师*/
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public String getAllCourse()
+    public String getAllCourse(@Context HttpServletRequest request)
     {
         JSONObject reply = new JSONObject();
+        /*管理员是否登录*/
+        if (!HttpSessionUtil.islogin(request,"role","admin"))
+        {
+            reply.put("status", 1000);
+            reply.put("msg","此操作是只能由管理员执行，请先登录！");
+            return reply.toString();
+        }
         try
         {
             /*查询*/
@@ -230,6 +260,7 @@ public class TeacherResource
         return reply;
     }
 
+
     /*老师所交的所有课程*/
     @Path("classlist/{teacherId}")
     @GET
@@ -239,11 +270,10 @@ public class TeacherResource
         JSONObject reply = new JSONObject();
 
         /*判断是否处于登录状态*/
-        String role = HttpSessionUtil.getString(request,"role");
-        if (role == null || !role.equals("teacher"))
+        if (!HttpSessionUtil.islogin(request,"role","teacher"))
         {
             reply.put("status",1000);
-            reply.put("msg","未登录！");
+            reply.put("msg","此操作只能由老师执行，请先登录！");
             return reply.toString();
         }
         /*查询*/
@@ -272,21 +302,62 @@ public class TeacherResource
         return reply.toString();
     }
 
+    /*老师补签*/
+    @Path("sgininfo")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
+    public Map sgin(String reqText,@Context HttpServletRequest request)
+    {
+        Map reply = new HashMap<String,Object>();
+        /*判断是否处于登录状态*/
+        if (!HttpSessionUtil.islogin(request,"role","teacher"))
+        {
+            reply.put("status",1000);
+            reply.put("msg","此操作只能由老师执行，请先登录！");
+            return reply;
+        }
+        /*处理请求*/
+        JSONObject jsReq = new JSONObject(reqText);
+        short courseId = (short) jsReq.getInt("courseId");
+        String studentCode = jsReq.getString("studentCode");
+        short time = (short)jsReq.getInt("time");
+
+        Sgininfo sgininfo = new Sgininfo();
+        sgininfo.setCourseId(courseId);
+        sgininfo.setStudentCode(studentCode);
+        sgininfo.setTimes(time);
+        sgininfo.setTimeCreated(DbUtil.now());
+        try
+        {
+            /*添加*/
+            sgininfoDao.add(sgininfo);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            reply.put("status",1000);
+            reply.put("msg","数据库错误"+e.getMessage());
+            return reply;
+        }
+        /*应答*/
+        reply.put("status",200);
+        reply.put("msg","OK");
+        return reply;
+    }
+
     /*老师开始或结束点名*/
     @Path("checkin/{courseId}/{flag}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map checkin(@PathParam("courseId") short courseId,
-                            @PathParam("flag") int flag,
-                            @Context HttpServletRequest request)
+                       @PathParam("flag") int flag,
+                       @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
-        String role = HttpSessionUtil.getString(request,"role");
-        if (role == null || !role.equals("teacher"))
+        if (!HttpSessionUtil.islogin(request,"role","teacher"))
         {
             reply.put("status",1000);
-            reply.put("msg","未登录！");
+            reply.put("msg","此操作只能由老师执行，请先登录！");
             return reply;
         }
 
@@ -294,6 +365,14 @@ public class TeacherResource
         try
         {
             Course course = courseDao.getById(courseId);
+            int time = course.getCheckinTime();                     /*本次签到的次数*/
+            if (!course.getCheckinDate().equals(DbUtil.nowDate())
+                    && flag == 1)   /*同一天多次访问这个资源，time只会加一次*/
+            {
+                time++;
+                course.setCheckinDate(DbUtil.nowDate());
+                course.setCheckinTime((short)time++);
+            }
             course.setCheckinFlag((byte)flag);
             course.setTimeModified(DbUtil.now());
             courseDao.update(course);
@@ -310,6 +389,7 @@ public class TeacherResource
         return reply;
     }
 
+
     /*学生开始答题*/
     /*flag:1代表开始答题，0代表结束答题*/
     @Path("/classtest/{courseId}/{flag}")
@@ -321,11 +401,10 @@ public class TeacherResource
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
-        String role = HttpSessionUtil.getString(request,"role");
-        if (role == null || !role.equals("teacher"))
+        if (!HttpSessionUtil.islogin(request,"role","teacher"))
         {
             reply.put("status",1000);
-            reply.put("msg","未登录！");
+            reply.put("msg","此操作只能由老师执行，请先登录！");
             return reply;
         }
 

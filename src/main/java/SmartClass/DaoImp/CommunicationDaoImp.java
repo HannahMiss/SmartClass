@@ -23,11 +23,11 @@ public class CommunicationDaoImp implements CommunicationDao
     /*已测试*/
     /*更新*/
     @Override
-    public void setAnswered(int cId) throws Exception
+    public void setAnswered(int cId,int flag) throws Exception
     {
         SqlWhere where = new SqlWhere();
         where.addExact("id", cId);
-        String sql = "update communication set answered=1" + where.toString();
+        String sql = "update communication set answered="+ flag + where.toString();
         DbUtil.execute(sql,true);
     }
 
@@ -59,6 +59,16 @@ public class CommunicationDaoImp implements CommunicationDao
         String hql = "select c from Communication c" + where.toString();
         List results = DbUtil.list(hql,false);
         return results;
+    }
+
+    @Override
+    public void deleteByCidScode(short courseId,String studentCode) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("courseId",courseId);
+        where.addExact("studentCode",studentCode);
+        String sql = "delete from communication" + where.toString();
+        DbUtil.execute(sql,true);
     }
 
     /*已测试*/

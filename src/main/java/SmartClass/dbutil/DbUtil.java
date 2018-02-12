@@ -3,12 +3,14 @@ package SmartClass.dbutil;
 import SmartClass.HibernateSessionFactory;
 import org.hibernate.Session;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class DbUtil
 {
+
 	public static Timestamp now () 
 	{
 		return new Timestamp(System.currentTimeMillis());
@@ -18,7 +20,8 @@ public class DbUtil
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return sdf.format( now() );
 	}
-	
+	public static Date nowDate(){return new Date(System.currentTimeMillis());}
+
 	public static int columnInt (Object val, int defValue)
 	{
 		try{

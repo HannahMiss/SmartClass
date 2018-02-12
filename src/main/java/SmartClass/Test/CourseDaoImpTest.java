@@ -35,7 +35,7 @@ public class CourseDaoImpTest
     {
         try
         {
-            courseDaoImp.deleteById((short)1003);
+            courseDaoImp.deleteById((short)1067);
         } catch (Exception e)
         {
             e.printStackTrace();

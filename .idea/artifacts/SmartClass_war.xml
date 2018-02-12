@@ -3,11 +3,6 @@
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="SmartClass01.war">
       <element id="artifact" artifact-name="SmartClass:war exploded" />
-      <element id="directory" name="WEB-INF">
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="Hibernate 5.2.12-5.2.12" />
-        </element>
-      </element>
     </root>
   </artifact>
 </component>

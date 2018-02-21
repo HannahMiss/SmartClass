@@ -94,7 +94,7 @@ public class StudentResource
             /*文件上传后解析excel文件，将数据导入到数据库*/
             Set<Student> students = new HashSet<Student>();              /*保存该课程下的学生*/
             File stuExcel = new File(request.getRealPath("/"),
-                    String.valueOf(courseId)+"studentsinfo.xsx");
+                    String.valueOf(courseId)+"studentsinfo.xlsx");
             FileInputStream inputStream = new FileInputStream(stuExcel);
             Workbook workbook = new XSSFWorkbook(inputStream);
             Sheet stuInfoSheet = workbook.getSheetAt(0);
@@ -114,12 +114,19 @@ public class StudentResource
                 row.getCell(1).setCellType(CellType.STRING);
                 String name = row.getCell(1).getStringCellValue();
 
-                Student student = new Student();
-                student.setCode(studentCode);
-                student.setPassword(studentCode.substring(studentCode.length()-6));
-                student.setName(name);
-                student.setTimerCreated(DbUtil.now());
-                student.setTimerCreated(DbUtil.now());
+                Student student = null;
+
+                student = studentDao.getByCode(studentCode);        /*查询此学生是否已经在数据库中*/
+                if (student == null)
+                {
+                    student = new Student();
+                    student.setCode(studentCode);
+                    student.setPassword(studentCode.substring(studentCode.length()-6));
+                    student.setName(name);
+                    student.setTimerCreated(DbUtil.now());
+                    student.setTimerCreated(DbUtil.now());
+                    studentDao.save(student);
+                }
                 students.add(student);
             }
 

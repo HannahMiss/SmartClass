@@ -35,6 +35,8 @@ public class TeacherResource
     private CourseDao courseDao = new CourseDaoImp();
     private AnswerDao answerDao = new AnswerDaoImp();
     private SgininfoDao sgininfoDao = new SgininfoDaoImp();
+
+    /********************************已测试******************************/
     /*添加老师*/
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)

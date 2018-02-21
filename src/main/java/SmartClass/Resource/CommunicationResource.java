@@ -1,5 +1,4 @@
 package SmartClass.Resource;
-
 import SmartClass.Dao.AnswerDao;
 import SmartClass.Dao.CommunicationDao;
 import SmartClass.DaoImp.CommunicationDaoImp;
@@ -8,7 +7,6 @@ import SmartClass.dbutil.DbUtil;
 import SmartClass.tool.HttpSessionUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

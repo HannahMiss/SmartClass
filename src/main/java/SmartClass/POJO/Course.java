@@ -153,7 +153,7 @@ public class Course implements java.io.Serializable
     }
 
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinTable(
             name = "student_course",
             joinColumns = {@JoinColumn(name = "courseId",referencedColumnName = "id")},

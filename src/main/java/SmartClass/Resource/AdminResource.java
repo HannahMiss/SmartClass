@@ -30,6 +30,7 @@ public class AdminResource
     private CourseDao courseDao = new CourseDaoImp();
     private TeacherDao teacherDao = new TeacherDaoImp();
 
+    /*************************************已测试**************************************/
     /*处理管理员登录功能*/
     @Path("login")
     @POST
@@ -63,7 +64,8 @@ public class AdminResource
         {
             e.printStackTrace();
             reply.put("status",1000);
-            reply.put("msg","数据库错误！"+e.getMessage());
+            reply.put("msg",e.getMessage());
+            return reply;
         }
 
         /*应答*/
@@ -71,6 +73,7 @@ public class AdminResource
         reply.put("msg","OK");
         return reply;
     }
+
 
     /*退出登录*/
     /*处理管理员登录功能*/
@@ -119,7 +122,5 @@ public class AdminResource
         }
         return reply;
     }
-
-
 
 }

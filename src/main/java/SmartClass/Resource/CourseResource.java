@@ -32,6 +32,8 @@ public class CourseResource
     private CourseDao courseDao = new CourseDaoImp();
     private TeacherDao teacherDao = new TeacherDaoImp();
     private StudentCourseDao studentCourseDao = new StudentCourseDaoImp();
+
+    /********************************已测试****************************************/
     /*添加课程*/
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -118,6 +120,8 @@ public class CourseResource
         return reply;
     }
 
+
+    /*******************************已测试*******************************************/
     /*删除某门课程*/
     @Path("{courseId}")
     @DELETE
@@ -155,6 +159,7 @@ public class CourseResource
         return reply;
     }
 
+    /**********************************已测试******************************************/
     /*得到所有课程*/
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)

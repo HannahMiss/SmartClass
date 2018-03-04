@@ -1,16 +1,8 @@
 package SmartClass.Resource;
 
-import SmartClass.Dao.AnswerDao;
-import SmartClass.Dao.CourseDao;
-import SmartClass.Dao.SgininfoDao;
-import SmartClass.Dao.TeacherDao;
-import SmartClass.Dao.StudentDao;
+import SmartClass.Dao.*;
 
-import SmartClass.DaoImp.AnswerDaoImp;
-import SmartClass.DaoImp.CourseDaoImp;
-import SmartClass.DaoImp.SgininfoDaoImp;
-import SmartClass.DaoImp.TeacherDaoImp;
-import SmartClass.DaoImp.StudentDaoImp;
+import SmartClass.DaoImp.*;
 
 import SmartClass.POJO.*;
 import SmartClass.dbutil.DbUtil;
@@ -37,6 +29,7 @@ public class WxStudentResource {
     private CourseDao courseDao = new CourseDaoImp();
     private AnswerDao answerDao = new AnswerDaoImp();
     private SgininfoDao sgininfoDao = new SgininfoDaoImp();
+    private CommunicationDao communicationDao = new CommunicationDaoImp();
 
 
     private StudentDao studentDao = new StudentDaoImp();
@@ -130,50 +123,50 @@ public class WxStudentResource {
     }
 
 
-    /*微信小程序学生签到 功能3.2*/
-    /*老师补签*/
-    @Path("sginIn")
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map sign(String reqText,@Context HttpServletRequest request)
-    {
-        Map reply = new HashMap<String,Object>();
-        /*判断是否处于登录状态*/
-//        if (!HttpSessionUtil.islogin(request,"role","teacher"))
+//    /*微信小程序学生签到 功能3.2*/
+//    /*老师补签*/
+//    @Path("sginIn")
+//    @PUT
+//    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
+//    public Map sign(String reqText,@Context HttpServletRequest request)
+//    {
+//        Map reply = new HashMap<String,Object>();
+//        /*判断是否处于登录状态*/
+////        if (!HttpSessionUtil.islogin(request,"role","teacher"))
+////        {
+////            reply.put("status",1000);
+////            reply.put("msg","此操作只能由老师执行，请先登录！");
+////            return reply;
+////        }
+//        /*处理请求*/
+//        /*将request中的文本转化为JSON格式*/
+//        JSONObject jsReq = new JSONObject(reqText);
+//        /*将JSON中相应的内容填写到不同的变量*/
+//        short courseId = (short) jsReq.getInt("courseId");
+//        String studentCode = jsReq.getString("studentCode");
+//        short time = (short)jsReq.getInt("time");
+//
+//        Sgininfo sgininfo = new Sgininfo();
+//        sgininfo.setCourseId(courseId);
+//        sgininfo.setStudentCode(studentCode);
+//        sgininfo.setTimes(time);
+//        sgininfo.setTimeCreated(DbUtil.now());
+//        try
 //        {
+//            /*添加*/
+//            sgininfoDao.add(sgininfo);
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
 //            reply.put("status",1000);
-//            reply.put("msg","此操作只能由老师执行，请先登录！");
+//            reply.put("msg","数据库错误"+e.getMessage());
 //            return reply;
 //        }
-        /*处理请求*/
-        /*将request中的文本转化为JSON格式*/
-        JSONObject jsReq = new JSONObject(reqText);
-        /*将JSON中相应的内容填写到不同的变量*/
-        short courseId = (short) jsReq.getInt("courseId");
-        String studentCode = jsReq.getString("studentCode");
-        short time = (short)jsReq.getInt("time");
-
-        Sgininfo sgininfo = new Sgininfo();
-        sgininfo.setCourseId(courseId);
-        sgininfo.setStudentCode(studentCode);
-        sgininfo.setTimes(time);
-        sgininfo.setTimeCreated(DbUtil.now());
-        try
-        {
-            /*添加*/
-            sgininfoDao.add(sgininfo);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            reply.put("status",1000);
-            reply.put("msg","数据库错误"+e.getMessage());
-            return reply;
-        }
-        /*应答*/
-        reply.put("status",200);
-        reply.put("msg","OK");
-        return reply;
-    }
+//        /*应答*/
+//        reply.put("status",200);
+//        reply.put("msg","OK");
+//        return reply;
+//    }
 
 
     /*-------------微信小程序 测验功能相关  功能3.3--------------*/
@@ -260,25 +253,40 @@ public class WxStudentResource {
         * */
         try{
             Course course = courseDao.getById(courseId);
-            byte answerFlag = course.getAnswerFlag();
+            byte classFlag = course.getClassFlag();
             /*answerFlag：
-                1：测验开启了
-                0：测验未开启*/
-            if(answerFlag == 0){
+                1：课程上课中
+                0：课程还未上课*/
+            if(classFlag == 0){
                 reply.put("status",2000);
-                reply.put("msg","本课程测验还未开始！");
+                reply.put("msg","本课程未在上课中，无法提问");
+//                reply.put("status",2000);
+//                reply.put("msg","本课程测验还未开始！");
             }
-            else if(answerFlag == 1){
+            else if(classFlag == 1){
                 reply.put("status",200);
                 reply.put("msg","提交结果成功");
 
                 /*将学生的回答写到数据库内*/
-                Answer answer = new Answer();
-                answer.setCourseId(courseId);
-                answer.setStudentCode(studentCode);
-                answer.setOpt(opt);
+                Communication communication = new Communication();
+                /*private short courseId;
+    private byte flag;
+    private String descr;
+    private Timestamp timeCreated;
+    private byte answered;
+    private int id;
+    private String studentCode;*/
+                communication.setCourseId(courseId);
+                communication.setStudentCode(studentCode);
+                communication.setDescr(descr);
 
-                answerDao.update(answer);
+                communication.setAnswered((byte)0);
+                communication.setFlag((byte)0);
+                communication.setTimeCreated(DbUtil.now());
+                
+                communicationDao.add(communication);
+
+
             }
         } catch (Exception e){
             reply.put("status",1000);

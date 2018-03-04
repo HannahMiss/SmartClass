@@ -2,6 +2,7 @@ package SmartClass.dbutil;
 
 import SmartClass.HibernateSessionFactory;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -135,6 +136,29 @@ public class DbUtil
 	}
 	
 	// 获取多行 (需自己构造SQL语句, 并注明是否HQL)
+	public static List  queryPage(String sql, boolean nativeSQL, int offset, int limit) throws Exception
+	{
+		Session dbss = HibernateSessionFactory.getSession();
+		try
+		{
+
+			List rawdata = null;
+			if(nativeSQL)
+				rawdata = dbss.createNativeQuery(sql).setFirstResult(offset)
+					.setMaxResults(limit).list();
+			else
+				rawdata  = dbss.createQuery(sql).setFirstResult(offset)
+						.setMaxResults(limit).list();
+
+			return rawdata;
+		} finally
+		{
+			if (dbss != null)
+				dbss.close();
+		}
+	}
+
+	// 获取多行 (需自己构造SQL语句, 并注明是否HQL)
 	public static List  listN(String sql, boolean nativeSQL, int N) throws Exception
 	{
 		Session dbss = HibernateSessionFactory.getSession();
@@ -153,7 +177,7 @@ public class DbUtil
 				dbss.close();
 		}
 	}
-	
+
 	// 执行DELETE或UPDATE (需自己构造SQL语句, 并注明是否HQL,ture：sql，false：hql)
 	public static int execute (String sql, boolean nativeSQL)  throws Exception
 	{

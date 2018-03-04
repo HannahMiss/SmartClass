@@ -22,6 +22,7 @@ public class Course implements java.io.Serializable
     private Timestamp timeCreated;
     private Timestamp timeModified;
     private Teacher teacherByTeacherId;
+    private byte classFlag;
     private Set<Student> students = new HashSet<Student>();
 
 
@@ -108,6 +109,12 @@ public class Course implements java.io.Serializable
     {
         this.timeModified = timeModified;
     }
+
+    @Basic
+    @Column(name = "classFlag", nullable = true)
+    public byte getClassFlag() {return classFlag;}
+
+    public void setClassFlag(byte classFlag) {this.classFlag = classFlag;}
 
     @Override
     public boolean equals(Object o)

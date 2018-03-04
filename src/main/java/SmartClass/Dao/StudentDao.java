@@ -28,4 +28,6 @@ public interface StudentDao
     /*得到所有的学生信息*/
     List<Student> getAll() throws Exception;
 
+    List<Student> getByCourseId(short courseId, int offset, int limit) throws Exception;
+
 }

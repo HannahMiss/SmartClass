@@ -1,21 +1,17 @@
 package SmartClass.Resource;
 
-import SmartClass.Dao.AnswerDao;
-import SmartClass.Dao.CourseDao;
-import SmartClass.Dao.SgininfoDao;
-import SmartClass.Dao.TeacherDao;
-import SmartClass.DaoImp.AnswerDaoImp;
-import SmartClass.DaoImp.CourseDaoImp;
-import SmartClass.DaoImp.SgininfoDaoImp;
-import SmartClass.DaoImp.TeacherDaoImp;
+import SmartClass.Dao.*;
+import SmartClass.DaoImp.*;
 import SmartClass.POJO.Course;
 import SmartClass.POJO.Sgininfo;
 import SmartClass.POJO.Teacher;
 import SmartClass.dbutil.DbUtil;
 import SmartClass.tool.HttpSessionUtil;
+import org.hibernate.Session;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -35,14 +31,18 @@ public class TeacherResource
     private CourseDao courseDao = new CourseDaoImp();
     private AnswerDao answerDao = new AnswerDaoImp();
     private SgininfoDao sgininfoDao = new SgininfoDaoImp();
+    private StudentCourseDao studentCourseDao = new StudentCourseDaoImp();
 
-    /********************************已测试******************************/
+    /********************************已测试********************************************/
     /*添加老师*/
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> addteacher(String reqText,@Context HttpServletRequest request)
+    public Map<String,Object> addteacher(String reqText,@Context HttpServletRequest request,
+                                         @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -79,14 +79,17 @@ public class TeacherResource
         return reply;
     }
 
+    /******************************已测试**********************************************/
     /*删除老师*/
     @Path("{teacherId}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> deleteTeacher(@PathParam("teacherId") short teacherId,
-                                            @Context HttpServletRequest request)
+                                            @Context HttpServletRequest request,
+                                            @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -96,7 +99,16 @@ public class TeacherResource
         }
         try
         {
-            /*删除*/
+            Teacher teacher = teacherDao.getById(teacherId);
+            for (Course c:teacher.getCoursesById())
+            {
+                /*删除课程和学生的关系*/
+                studentCourseDao.deleteByCourseId(c.getId());
+            }
+            /*删除课程,由于级联操作，
+            *会同时删除sgininfo表中和courseId有关的记录
+            *会同时删除comminication表中和courseId有关的记录
+            * */
             teacherDao.deleteById(teacherId);
         } catch (Exception e)
         {
@@ -112,14 +124,17 @@ public class TeacherResource
     }
 
 
+    /*******************************已测试*********************************************/
     /*修改老师*/
     @Path("{teacherId}")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> updataTeacher(@PathParam("teacherId") short teacherId,String reqText,
-                                            @Context HttpServletRequest request)
+                                            @Context HttpServletRequest request,
+                                            @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -154,12 +169,14 @@ public class TeacherResource
     }
 
 
+    /**********************************已测试******************************************/
     /*得到所有老师*/
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public String getAllCourse(@Context HttpServletRequest request)
+    public String getAllCourse(@Context HttpServletRequest request, @Context HttpServletResponse response)
     {
         JSONObject reply = new JSONObject();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -175,7 +192,7 @@ public class TeacherResource
             for (Teacher t:teachers)
             {
                 JSONObject jsTeacher = new JSONObject();
-                jsTeacher.put("teacherId",t.getId());
+                jsTeacher.put("teacherId",t.getCode());
                 jsTeacher.put("teacherName",t.getName());
                 teacherArray.put(jsTeacher);
             }
@@ -236,6 +253,34 @@ public class TeacherResource
         return reply;
     }
 
+
+    /*老师退出*/
+    @Path("exit")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
+    public Map<String,Object> exit(@Context HttpServletRequest request)
+    {
+        Map reply = new HashMap<String,Object>();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("role").equals("teacher"))
+        {
+            session.removeAttribute("role");
+            session.removeAttribute("user");
+            session.removeAttribute("courseId");
+            /*应答*/
+            reply.put("status",200);
+            reply.put("msg","OK");
+        }else
+        {
+            reply.put("status", 1000);
+            reply.put("msg","此操作是只能由管理员操作，请先登录！");
+        }
+        return reply;
+
+    }
+
+
+    /*老师退出*/
     /*老师是否登录*/
     @Path("islogin")
     @GET
@@ -263,6 +308,7 @@ public class TeacherResource
     }
 
 
+    /**************************************已测试**********************************************/
     /*老师所交的所有课程*/
     @Path("classlist/{teacherId}")
     @GET
@@ -304,6 +350,47 @@ public class TeacherResource
         return reply.toString();
     }
 
+    /************************************已测试************************************************/
+    /*老师选择课程*/
+    @Path("selectclass/{courseId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
+    public Map selectclass(@PathParam("courseId") short courseId,@Context HttpServletRequest request)
+    {
+        Map reply = new HashMap<String,Object>();
+
+        /*判断是否处于登录状态*/
+        if (!HttpSessionUtil.islogin(request,"role","teacher"))
+        {
+            reply.put("status",1000);
+            reply.put("msg","此操作只能由老师执行，请先登录！");
+            return reply;
+        }
+        /*查询*/
+        try
+        {
+            /*将课程Id存进session*/
+            HttpSession session = request.getSession();
+            session.setAttribute("courseId",courseId);
+
+            /*将上课标志位改为正在上课*/
+            Course course = courseDao.getById(courseId);
+            course.setClassFlag((byte)0);
+            courseDao.update(course);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            reply.put("status",1000);
+            reply.put("msg","数据库错误"+e.getMessage());
+            return reply;
+        }
+        /*应答*/
+        reply.put("status",200);
+        reply.put("msg","OK");
+        return reply;
+    }
+
+    /**********************************已测试*************************************************/
     /*老师补签*/
     @Path("sgininfo")
     @PUT
@@ -346,9 +433,11 @@ public class TeacherResource
         return reply;
     }
 
+
+    /**********************************已测试**************************************************/
     /*老师开始或结束点名*/
     @Path("checkin/{courseId}/{flag}")
-    @GET
+    @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map checkin(@PathParam("courseId") short courseId,
                        @PathParam("flag") int flag,
@@ -368,12 +457,14 @@ public class TeacherResource
         {
             Course course = courseDao.getById(courseId);
             int time = course.getCheckinTime();                     /*本次签到的次数*/
-            if (!course.getCheckinDate().equals(DbUtil.nowDate())
+            System.out.println(course.getCheckinDate());
+            System.out.println(DbUtil.nowDate());
+            if (!course.getCheckinDate().toString().equals(DbUtil.nowDate().toString())
                     && flag == 1)   /*同一天多次访问这个资源，time只会加一次*/
             {
                 time++;
                 course.setCheckinDate(DbUtil.nowDate());
-                course.setCheckinTime((short)time++);
+                course.setCheckinTime((short)time);
             }
             course.setCheckinFlag((byte)flag);
             course.setTimeModified(DbUtil.now());
@@ -392,14 +483,15 @@ public class TeacherResource
     }
 
 
+    /**************************************已测试**********************************************/
     /*学生开始答题*/
     /*flag:1代表开始答题，0代表结束答题*/
-    @Path("/classtest/{courseId}/{flag}")
-    @GET
+    @Path("classtest/{courseId}/{flag}")
+    @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map classtest(@PathParam("courseId") short courseId,
-                            @PathParam("flag") int flag,
-                            @Context HttpServletRequest request)
+                         @PathParam("flag") int flag,
+                         @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/

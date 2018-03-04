@@ -12,6 +12,7 @@ import SmartClass.dbutil.DbUtil;
 import org.junit.Test;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -118,6 +119,22 @@ public class StudentDaoImpTest
     public void getAllTest()
     {
 
+    }
+
+    @Test
+    public void getByCourseId()
+    {
+        try
+        {
+            List<Student> students = studentDao.getByCourseId((short) 1069,0,10);
+            for (Student s:students)
+            {
+                System.out.println(s.getName());
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

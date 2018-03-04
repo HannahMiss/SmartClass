@@ -27,6 +27,7 @@ public class CommunicationResource
     private CommunicationDao communicationDao = new CommunicationDaoImp();
 
 
+    /**********************************已测试******************************/
     /*得到提问信息*/
     @Path("0/{courseId}")
     @GET
@@ -48,7 +49,7 @@ public class CommunicationResource
         /*查询*/
         try
         {
-         List<Communication> results =  communicationDao.getQuestions(courseId, timestamp);
+         List<Communication> results =  communicationDao.getQuestionsLimit(courseId, timestamp,offset,limit);
          JSONArray questionArray = new JSONArray();
          for (Communication c:results)
          {
@@ -137,6 +138,8 @@ public class CommunicationResource
         return reply;
     }
 
+
+
     /*删除问题*/
     @Path("{questionId}")
     @DELETE
@@ -170,6 +173,7 @@ public class CommunicationResource
         return reply;
     }
 
+    /***************************已测试****************************************/
     /*将问题修改已回答*/
     @Path("{questionId}")
     @PUT

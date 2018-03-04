@@ -8,9 +8,11 @@ import SmartClass.DaoImp.CourseDaoImp;
 import SmartClass.DaoImp.TeacherDaoImp;
 import SmartClass.POJO.Administrator;
 import SmartClass.tool.HttpSessionUtil;
+import com.sun.deploy.net.HttpResponse;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -35,8 +37,11 @@ public class AdminResource
     @Path("login")
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> login(String reqText, @Context HttpServletRequest request)
+    public Map<String,Object> login(String reqText, @Context HttpServletRequest request,
+                                    @Context HttpServletResponse response)
     {
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
 
         Map reply = new HashMap<String,Object>();
         /*处理请求*/
@@ -75,16 +80,18 @@ public class AdminResource
     }
 
 
+    /************************************已测试**************************************/
     /*退出登录*/
     /*处理管理员登录功能*/
     @Path("exit")
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> exit(@Context HttpServletRequest request)
+    public Map<String,Object> exit(@Context HttpServletRequest request,
+                                   @Context HttpServletResponse response)
     {
 
         Map reply = new HashMap<String,Object>();
-
+        response.setHeader("Access-Control-Allow-Origin", "*");
         if (HttpSessionUtil.islogin(request,"role","admin"))
         {
             HttpSession session = request.getSession();
@@ -102,6 +109,7 @@ public class AdminResource
     }
 
 
+    /*无用*/
     @Path("islogin")
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)

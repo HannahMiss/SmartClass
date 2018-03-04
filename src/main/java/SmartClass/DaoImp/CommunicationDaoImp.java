@@ -46,6 +46,18 @@ public class CommunicationDaoImp implements CommunicationDao
         return results;
     }
 
+    @Override
+    public List<Communication> getQuestionsLimit(short courseId, String timestamp, int offset, int limit) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("courseId", courseId);
+        where.addExact("flag", 0);
+        where.addGtE("timeCreated", timestamp);
+        String hql = "select c from Communication c" + where.toString();
+        List results = DbUtil.queryPage(hql,false, offset, limit);
+        return results;
+    }
+
     /*已测试*/
     /*根据时间戳，得到反馈*/
     @Override
@@ -71,12 +83,22 @@ public class CommunicationDaoImp implements CommunicationDao
         DbUtil.execute(sql,true);
     }
 
+
     /*已测试*/
     @Override
     public void deleteById(int id) throws Exception
     {
         SqlWhere where = new SqlWhere();
         where.addExact("id",id);
+        String sql = "delete from communication" + where.toString();
+        DbUtil.execute(sql,true);
+    }
+
+    @Override
+    public void deleteBycourseId(short courseId) throws Exception
+    {
+        SqlWhere where = new SqlWhere();
+        where.addExact("courseId", courseId);
         String sql = "delete from communication" + where.toString();
         DbUtil.execute(sql,true);
     }

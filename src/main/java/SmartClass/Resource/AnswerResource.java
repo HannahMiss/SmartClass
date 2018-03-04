@@ -18,6 +18,7 @@ import java.util.Map;
 public class AnswerResource
 {
 
+    /********************************已测试**********************************************/
     private final static String CHARSET_UTF_8 = "charset=utf-8";
     private AnswerDao answerDao = new AnswerDaoImp();
     @Path("{courseId}")
@@ -39,9 +40,9 @@ public class AnswerResource
             /*应答*/
             reply.put("num",total);
             reply.put("A",ansewerA);
-            reply.put("B",ansewerA);
-            reply.put("C",ansewerA);
-            reply.put("D",ansewerA);
+            reply.put("B",ansewerB);
+            reply.put("C",ansewerC);
+            reply.put("D",ansewerD);
         } catch (Exception e)
         {
             e.printStackTrace();

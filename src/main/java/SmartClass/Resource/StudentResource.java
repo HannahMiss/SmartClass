@@ -2,10 +2,7 @@ package SmartClass.Resource;
 
 import SmartClass.Dao.*;
 import SmartClass.DaoImp.*;
-import SmartClass.POJO.Communication;
-import SmartClass.POJO.Course;
-import SmartClass.POJO.Sgininfo;
-import SmartClass.POJO.Student;
+import SmartClass.POJO.*;
 import SmartClass.dbutil.DbUtil;
 import SmartClass.tool.HttpSessionUtil;
 import org.apache.commons.fileupload.FileItemIterator;
@@ -20,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -41,14 +39,19 @@ public class StudentResource
     private AnswerDao answerDao = new AnswerDaoImp();
     private SgininfoDao sgininfoDao = new SgininfoDaoImp();
     private CommunicationDao communicationDao = new CommunicationDaoImp();
+
+    /*******************************已测试**************************************************/
     /*上传学生名单，并添加某门课的所有学生*/
     @Path("upload/{courseId}")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String,Object> uploadStudents(@PathParam("courseId") short courseId,
-                                             @Context HttpServletRequest request)
+                                             @Context HttpServletRequest request,
+                                             @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -124,7 +127,7 @@ public class StudentResource
                     student.setPassword(studentCode.substring(studentCode.length()-6));
                     student.setName(name);
                     student.setTimerCreated(DbUtil.now());
-                    student.setTimerCreated(DbUtil.now());
+                    student.setTimerModified(DbUtil.now());
                     studentDao.save(student);
                 }
                 students.add(student);
@@ -152,15 +155,20 @@ public class StudentResource
     }
 
 
+
+    /*******************************已测试**************************************************/
     /*为一门课添加一个学生*/
     @Path("{courseId}")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String,Object> addStudent(@PathParam("courseId") short courseId, String reqText,
-                                         @Context HttpServletRequest request)
+                                         @Context HttpServletRequest request,
+                                         @Context HttpServletResponse response)
     {
 
         Map reply = new HashMap<String,Object>();
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -196,6 +204,13 @@ public class StudentResource
                 studentDao.save(student);
             }
             studentCourseDao.add(courseId,student.getId());
+
+            /*添加答案表记录*/
+            Answer newAnswer = new Answer();
+            newAnswer.setCourseId(courseId);
+            newAnswer.setStudentCode(student.getCode());
+            newAnswer.setOpt((short)0);
+            answerDao.add(newAnswer);
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -210,15 +225,19 @@ public class StudentResource
     }
 
 
+    /********************************已测试*****************************************/
     /*删除某门课的学生*/
     @Path("{courseId}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String,Object> deleteStudent(@PathParam("courseId") short courseId, String reqText,
-                                            @Context HttpServletRequest request)
+                                            @Context HttpServletRequest request,
+                                            @Context HttpServletResponse response)
     {
 
         Map reply = new HashMap<String,Object>();
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*处理请求*/
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
@@ -250,15 +269,22 @@ public class StudentResource
         return reply;
     }
 
-    /*得到某门课的所有学生*/
+
+    /*****************************已测试*****************************************/
+    /*得到某门课的所有学生,分页查询*/
     @Path("{courseId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getByCourseId(@PathParam("courseId") short courseId,
-                                            @Context HttpServletRequest request)
+                                @QueryParam("offset") int offset,
+                                @QueryParam("limit") int limit,
+                                @Context HttpServletRequest request,
+                                @Context HttpServletResponse response)
     {
 
         JSONObject reply = new JSONObject();
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -269,9 +295,15 @@ public class StudentResource
 
         try
         {
-            Course course = courseDao.getByIdWithStudent(courseId);
+            if (offset == 0)
+            {
+                Course course = courseDao.getByIdWithStudent(courseId);
+                int num = course.getStudents().size();
+                reply.put("total",num);
+            }
+            List<Student> students = studentDao.getByCourseId(courseId,offset,limit);
             JSONArray data = new JSONArray();
-            for (Student student:course.getStudents())
+            for (Student student:students)
             {
                 JSONObject stu = new JSONObject();
                 stu.put("studentId",student.getId());

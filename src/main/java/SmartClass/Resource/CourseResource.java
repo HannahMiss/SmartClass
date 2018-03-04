@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -37,8 +38,10 @@ public class CourseResource
     /*添加课程*/
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String,Object> addCourse(String reqText, @Context HttpServletRequest request)
+    public Map<String,Object> addCourse(String reqText, @Context HttpServletRequest request,
+                                        @Context HttpServletResponse response)
     {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         Map reply = new HashMap<String,Object>();
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
@@ -64,6 +67,7 @@ public class CourseResource
             course.setAnswerFlag((byte)0);
             course.setTimeCreated(DbUtil.now());
             course.setTimeModified(DbUtil.now());
+            course.setClassFlag((byte)0);
             courseDao.save(course);
         }catch (Exception e)
         {
@@ -78,14 +82,17 @@ public class CourseResource
         return reply;
     }
 
+    /**********************************已测试**************************************/
     /*修改课程*/
     @Path("{courseId}")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> updataCourse(@PathParam("courseId")short courseId, String reqText,
-                                           @Context HttpServletRequest request)
+                                           @Context HttpServletRequest request,
+                                           @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -127,9 +134,11 @@ public class CourseResource
     @DELETE
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> deleteCourse(@PathParam("courseId") short courseId,
-                                           @Context HttpServletRequest request)
+                                           @Context HttpServletRequest request,
+                                           @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -163,9 +172,11 @@ public class CourseResource
     /*得到所有课程*/
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public String getAllCourse(@Context HttpServletRequest request)
+    public String getAllCourse(@Context HttpServletRequest request,
+                               @Context HttpServletResponse response)
     {
         JSONObject reply = new JSONObject();
+        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {

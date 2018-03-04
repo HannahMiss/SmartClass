@@ -13,4 +13,6 @@ public interface StudentCourseDao
 
     /*根据课程Id，删除多条记录*/
     void deleteByCourseId(short courseId) throws Exception;
+
+
 }

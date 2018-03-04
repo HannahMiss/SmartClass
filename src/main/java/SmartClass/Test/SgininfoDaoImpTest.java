@@ -51,7 +51,7 @@ public class SgininfoDaoImpTest
     {
         try
         {
-            List<String> rows = sgininfoDaoImp.getOneTimeByCourseId((short)1000,(short)1);
+            List<String> rows = sgininfoDaoImp.getOneTimeByCourseId((short)1000,(short)1074);
             for (String str : rows)
             {
                 System.out.println("studenCode:" + str);

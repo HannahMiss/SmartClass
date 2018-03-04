@@ -23,5 +23,4 @@ public interface CourseDao
     Course getById(short courseId) throws Exception;
 
     Course getByIdWithStudent(short courseId)throws Exception;
-
 }

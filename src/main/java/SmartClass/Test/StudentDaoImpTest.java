@@ -89,7 +89,13 @@ public class StudentDaoImpTest
     @Test
     public void deleteByIdTest()
     {
-
+        try
+        {
+            studentCourseDao.clearUUidByCourseId((short)1072);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -136,5 +142,7 @@ public class StudentDaoImpTest
             e.printStackTrace();
         }
     }
+
+
 
 }

@@ -192,8 +192,9 @@ public class TeacherResource
             for (Teacher t:teachers)
             {
                 JSONObject jsTeacher = new JSONObject();
-                jsTeacher.put("teacherId",t.getCode());
+                jsTeacher.put("teacherId",t.getId());
                 jsTeacher.put("teacherName",t.getName());
+                jsTeacher.put("teacherWorkId",t.getCode());
                 teacherArray.put(jsTeacher);
             }
             reply.put("data", teacherArray);
@@ -218,7 +219,6 @@ public class TeacherResource
     public Map<String,Object> login(String reqText, @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
-
         /*处理请求*/
         JSONObject jsReq = new JSONObject(reqText);
         String username = jsReq.getString("username");
@@ -240,6 +240,7 @@ public class TeacherResource
             HttpSession session = request.getSession();
             session.setAttribute("role","teacher");
             session.setAttribute("user", teacher);
+            reply.put("teacherId",teacher.getId());
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -264,10 +265,11 @@ public class TeacherResource
         HttpSession session = request.getSession();
         if (session.getAttribute("role").equals("teacher"))
         {
-            session.removeAttribute("role");
-            session.removeAttribute("user");
-            session.removeAttribute("courseId");
+//            session.removeAttribute("role");
+//            session.removeAttribute("user");
+//            session.removeAttribute("courseId");
             /*应答*/
+            session.invalidate();
             reply.put("status",200);
             reply.put("msg","OK");
         }else
@@ -316,7 +318,6 @@ public class TeacherResource
     public String classList(@PathParam("teacherId") short teacherId,@Context HttpServletRequest request)
     {
         JSONObject reply = new JSONObject();
-
         /*判断是否处于登录状态*/
         if (!HttpSessionUtil.islogin(request,"role","teacher"))
         {
@@ -375,7 +376,7 @@ public class TeacherResource
 
             /*将上课标志位改为正在上课*/
             Course course = courseDao.getById(courseId);
-            course.setClassFlag((byte)0);
+            course.setClassFlag((byte)1);
             courseDao.update(course);
         } catch (Exception e)
         {

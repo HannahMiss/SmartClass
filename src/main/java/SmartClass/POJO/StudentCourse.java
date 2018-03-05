@@ -12,7 +12,7 @@ public class StudentCourse
 {
     private int studentId;
     private short courseId;
-
+    private String uuid;
     @Id
     @Column(name = "studentId", nullable = false)
     public int getStudentId()
@@ -36,6 +36,12 @@ public class StudentCourse
     {
         this.courseId = courseId;
     }
+
+    @Basic
+    @Column(name = "uuid",nullable = true, length = 32)
+    public String getUuid() {return uuid;}
+
+    public void setUuid(String uuid) {this.uuid = uuid;}
 
     @Override
     public boolean equals(Object o)

@@ -517,7 +517,7 @@ public class StudentResource
                 answer.setCourseId(courseId);
                 answer.setStudentCode(studentCode);
                 answer.setOpt(opt);
-                answerDao.update(answer);
+                answerDao.add(answer);
             }
         } catch (Exception e)
         {

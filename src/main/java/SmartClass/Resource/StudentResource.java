@@ -581,7 +581,7 @@ public class StudentResource
     }
 
 
-    /*微信小程序  反馈功能相关 功能3.4*/
+    /*微信小程序  反馈功能相关 功能3.5*/
     @Path("feedback")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)

@@ -23,6 +23,7 @@ public class CourseDaoImpTest
     CourseDao courseDaoImp = new CourseDaoImp();
     @Test
     public void testSave()
+
     {
         Course course = new Course();
         course.setCourseName("计算机通信新技术");

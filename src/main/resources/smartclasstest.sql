@@ -4,7 +4,7 @@
  Source Server         : MobileClassDB
  Source Server Type    : MySQL
  Source Server Version : 50718
- Source Host           : localhost:3306
+ Source Host           : 127.0.0.1:3306
  Source Schema         : smartclasstest
 
  Target Server Type    : MySQL

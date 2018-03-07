@@ -42,7 +42,7 @@ public class StudentResource
     private TeacherDao teacherDao = new TeacherDaoImp();
     private CourseDao courseDao = new CourseDaoImp();
     private AnswerDao answerDao = new AnswerDaoImp();
-    private SgininfoDao sgininfoDao = new SgininfoDaoImp();
+    private SigninfoDao signinfoDao = new SigninfoDaoImp();
     private CommunicationDao communicationDao = new CommunicationDaoImp();
     private StudentCourseDao studentCourseDao = new StudentCourseDaoImp();
     private StudentDao studentDao = new StudentDaoImp();
@@ -255,7 +255,7 @@ public class StudentResource
             String studentCode = student.getCode();
             studentCourseDao.delete(courseId,id);                       /*student_couse删除学生和课程的关系*/
             answerDao.deleteAnswer(courseId,studentCode);               /*删除answer表的相关数据*/
-            sgininfoDao.deleteInfo(courseId,studentCode);               /*删除sgininfo表相关数据*/
+            signinfoDao.deleteInfo(courseId,studentCode);               /*删除signinfo表相关数据*/
             communicationDao.deleteByCidScode(courseId,studentCode);    /*删除communication表相关的数据*/
         }catch (Exception e)
         {
@@ -415,7 +415,7 @@ public class StudentResource
 
 
     /*微信小程序学生签到 功能3.2*/
-    @Path("sginIn")
+    @Path("signIn")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map sign(String reqText)
@@ -458,12 +458,12 @@ public class StudentResource
             short time = course.getCheckinTime();
 
             /*添加签到信息*/
-            Sgininfo sgininfo = new Sgininfo();
-            sgininfo.setCourseId(courseId);
-            sgininfo.setStudentCode(studentCode);
-            sgininfo.setTimes(time);
-            sgininfo.setTimeCreated(DbUtil.now());
-            sgininfoDao.add(sgininfo);
+            Signinfo signinfo = new Signinfo();
+            signinfo.setCourseId(courseId);
+            signinfo.setStudentCode(studentCode);
+            signinfo.setTimes(time);
+            signinfo.setTimeCreated(DbUtil.now());
+            signinfoDao.add(signinfo);
         } catch (Exception e)
         {
             e.printStackTrace();

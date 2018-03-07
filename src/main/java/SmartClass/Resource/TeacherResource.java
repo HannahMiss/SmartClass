@@ -3,7 +3,7 @@ package SmartClass.Resource;
 import SmartClass.Dao.*;
 import SmartClass.DaoImp.*;
 import SmartClass.POJO.Course;
-import SmartClass.POJO.Sgininfo;
+import SmartClass.POJO.Signinfo;
 import SmartClass.POJO.Teacher;
 import SmartClass.dbutil.DbUtil;
 import SmartClass.tool.HttpSessionUtil;
@@ -31,7 +31,7 @@ public class TeacherResource
     private TeacherDao teacherDao = new TeacherDaoImp();
     private CourseDao courseDao = new CourseDaoImp();
     private AnswerDao answerDao = new AnswerDaoImp();
-    private SgininfoDao sgininfoDao = new SgininfoDaoImp();
+    private SigninfoDao signinfoDao = new SigninfoDaoImp();
     private StudentCourseDao studentCourseDao = new StudentCourseDaoImp();
 
     /********************************已测试********************************************/
@@ -104,7 +104,7 @@ public class TeacherResource
                 studentCourseDao.deleteByCourseId(c.getId());
             }
             /*删除课程,由于级联操作，
-            *会同时删除sgininfo表中和courseId有关的记录
+            *会同时删除signinfo表中和courseId有关的记录
             *会同时删除comminication表中和courseId有关的记录
             * */
             teacherDao.deleteById(teacherId);
@@ -404,10 +404,10 @@ public class TeacherResource
 
     /**********************************已测试*************************************************/
     /*老师补签*/
-    @Path("sgininfo")
+    @Path("signinfo")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map sgin(String reqText,@Context HttpServletRequest request,@Context HttpServletResponse response)
+    public Map sign(String reqText,@Context HttpServletRequest request,@Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -430,15 +430,15 @@ public class TeacherResource
         String studentCode = jsReq.getString("studentCode");
         short time = (short)jsReq.getInt("time");
 
-        Sgininfo sgininfo = new Sgininfo();
-        sgininfo.setCourseId(courseId);
-        sgininfo.setStudentCode(studentCode);
-        sgininfo.setTimes(time);
-        sgininfo.setTimeCreated(DbUtil.now());
+        Signinfo signinfo = new Signinfo();
+        signinfo.setCourseId(courseId);
+        signinfo.setStudentCode(studentCode);
+        signinfo.setTimes(time);
+        signinfo.setTimeCreated(DbUtil.now());
         try
         {
             /*添加*/
-            sgininfoDao.add(sgininfo);
+            signinfoDao.add(signinfo);
         } catch (Exception e)
         {
             e.printStackTrace();

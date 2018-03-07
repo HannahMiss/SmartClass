@@ -1,12 +1,12 @@
 package SmartClass.Resource;
 import SmartClass.Dao.CourseDao;
-import SmartClass.Dao.SgininfoDao;
+import SmartClass.Dao.SigninfoDao;
 import SmartClass.Dao.StudentDao;
 import SmartClass.DaoImp.CourseDaoImp;
-import SmartClass.DaoImp.SgininfoDaoImp;
+import SmartClass.DaoImp.SigninfoDaoImp;
 import SmartClass.DaoImp.StudentDaoImp;
 import SmartClass.POJO.Course;
-import SmartClass.POJO.Sgininfo;
+import SmartClass.POJO.Signinfo;
 import SmartClass.POJO.Student;
 import SmartClass.tool.HttpSessionUtil;
 import org.json.JSONArray;
@@ -24,11 +24,11 @@ import java.util.Map;
 /**
  * Created by 73681 on 2018/2/7.
  */
-@Path("sgininfo")
-public class SginInfoResource
+@Path("signinfo")
+public class SignInfoResource
 {
     private final static String CHARSET_UTF_8 = "charset=utf-8";
-    private SgininfoDao sgininfoDao = new SgininfoDaoImp();
+    private SigninfoDao signinfoDao = new SigninfoDaoImp();
     private CourseDao courseDao = new CourseDaoImp();
     private StudentDao studentDao = new StudentDaoImp();
 
@@ -37,7 +37,7 @@ public class SginInfoResource
     @Path("{courseId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getSginInfoByCourse(@PathParam("courseId") short courseId,
+    public String getsignInfoByCourse(@PathParam("courseId") short courseId,
                                       @QueryParam("offset") int offset,
                                       @QueryParam("limit") int limit,
                                       @Context HttpServletRequest request,
@@ -63,19 +63,19 @@ public class SginInfoResource
             Course course = courseDao.getById(courseId);
             short time = course.getCheckinTime();
             List<Student> students = studentDao.getByCourseId(courseId, offset, limit);
-            List<String> result = sgininfoDao.getOneTimeByCourseId(courseId, time);
+            List<String> result = signinfoDao.getOneTimeByCourseId(courseId, time);
             for (Student s : students)
             {
-                JSONObject jsSginInfo = new JSONObject();
-                jsSginInfo.put("studentId", s.getCode());
+                JSONObject jssignInfo = new JSONObject();
+                jssignInfo.put("studentId", s.getCode());
                 if (result.contains(s.getCode()))
                 {
-                    jsSginInfo.put("attendances", 1);
+                    jssignInfo.put("attendances", 1);
                 } else
                 {
-                    jsSginInfo.put("attendances", 0);
+                    jssignInfo.put("attendances", 0);
                 }
-                info.put(jsSginInfo);
+                info.put(jssignInfo);
             }
             reply.put("data", info);
 

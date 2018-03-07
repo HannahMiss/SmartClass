@@ -84,20 +84,20 @@ CREATE TABLE `course`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1072 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for sgininfo
+-- Table structure for signinfo
 -- ----------------------------
-DROP TABLE IF EXISTS `sgininfo`;
-CREATE TABLE `sgininfo`  (
+DROP TABLE IF EXISTS `signinfo`;
+CREATE TABLE `signinfo`  (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `courseId` smallint(6) NOT NULL,
   `studentCode` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `times` smallint(6) NOT NULL COMMENT '签到次数：从1开始',
   `timeCreated` datetime(0) NOT NULL COMMENT '签到的时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `sgincid`(`courseId`) USING BTREE,
-  INDEX `sginscode`(`studentCode`) USING BTREE,
-  CONSTRAINT `sgincid` FOREIGN KEY (`courseId`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `sginscode` FOREIGN KEY (`studentCode`) REFERENCES `student` (`code`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `signcid`(`courseId`) USING BTREE,
+  INDEX `signscode`(`studentCode`) USING BTREE,
+  CONSTRAINT `signcid` FOREIGN KEY (`courseId`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `signscode` FOREIGN KEY (`studentCode`) REFERENCES `student` (`code`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

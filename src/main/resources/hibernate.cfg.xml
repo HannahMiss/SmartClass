@@ -43,7 +43,7 @@
         <mapping class="SmartClass.POJO.Course"/>
         <mapping class="SmartClass.POJO.Student"/>
         <mapping class="SmartClass.POJO.Teacher"/>
-        <mapping class="SmartClass.POJO.Sgininfo"/>
+        <mapping class="SmartClass.POJO.signinfo"/>
         <mapping class="SmartClass.POJO.Communication"/>
         <mapping class="SmartClass.POJO.Answer"/>
         <mapping class="SmartClass.POJO.StudentCourse"/>

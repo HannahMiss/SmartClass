@@ -151,7 +151,7 @@ public class CourseResource
             /*删除课程和学生的关系*/
             studentCourseDao.deleteByCourseId(courseId);
             /*删除课程,由于级联操作，
-            *会同时删除sgininfo表中和courseId有关的记录
+            *会同时删除signinfo表中和courseId有关的记录
             *会同时删除comminication表中和courseId有关的记录
             * */
             courseDao.deleteById((short)courseId);

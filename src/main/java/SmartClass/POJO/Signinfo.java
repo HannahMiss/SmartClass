@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * Created by 73681 on 2018/2/3.
  */
 @Entity
-public class Sgininfo implements Serializable
+public class Signinfo implements Serializable
 {
     private int id;
     private short courseId;
@@ -85,14 +85,14 @@ public class Sgininfo implements Serializable
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sgininfo sgininfo = (Sgininfo) o;
+        Signinfo signinfo = (Signinfo) o;
 
-        if (courseId != sgininfo.courseId) return false;
-        if (times != sgininfo.times) return false;
-        if (id != sgininfo.id) return false;
-        if (studentCode != null ? !studentCode.equals(sgininfo.studentCode) : sgininfo.studentCode != null)
+        if (courseId != signinfo.courseId) return false;
+        if (times != signinfo.times) return false;
+        if (id != signinfo.id) return false;
+        if (studentCode != null ? !studentCode.equals(signinfo.studentCode) : signinfo.studentCode != null)
             return false;
-        if (timeCreated != null ? !timeCreated.equals(sgininfo.timeCreated) : sgininfo.timeCreated != null)
+        if (timeCreated != null ? !timeCreated.equals(signinfo.timeCreated) : signinfo.timeCreated != null)
             return false;
 
         return true;

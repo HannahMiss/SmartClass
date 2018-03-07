@@ -1,7 +1,7 @@
 package SmartClass.DaoImp;
 
-import SmartClass.Dao.SgininfoDao;
-import SmartClass.POJO.Sgininfo;
+import SmartClass.Dao.SigninfoDao;
+import SmartClass.POJO.Signinfo;
 import SmartClass.dbutil.DbUtil;
 import SmartClass.dbutil.SqlWhere;
 
@@ -10,11 +10,11 @@ import java.util.List;
 /**
  * Created by 73681 on 2018/2/3.
  */
-public class SgininfoDaoImp implements SgininfoDao
+public class SigninfoDaoImp implements SigninfoDao
 {
     /*已测试*/
     @Override
-    public void add(Sgininfo info) throws Exception
+    public void add(Signinfo info) throws Exception
     {
         DbUtil.save(info);
     }
@@ -27,18 +27,18 @@ public class SgininfoDaoImp implements SgininfoDao
         where.addExact("courseId", courseId);
         where.addExact("times", times);
 
-        String sql = "select studentCode from sgininfo" + where.toString();
+        String sql = "select studentCode from signinfo" + where.toString();
         List results = DbUtil.list(sql,true);
         return results;
     }
 
     /*已测试*/
     @Override
-    public List<Sgininfo> getAllByCourseId(short courseId) throws Exception
+    public List<Signinfo> getAllByCourseId(short courseId) throws Exception
     {
         SqlWhere where = new SqlWhere();
         where.addExact("courseId", courseId);
-        String hql = "select s from Sgininfo s" + where.toString();
+        String hql = "select s from signinfo s" + where.toString();
         List results = DbUtil.list(hql,false);
         return results;
     }
@@ -49,7 +49,7 @@ public class SgininfoDaoImp implements SgininfoDao
     {
         SqlWhere where = new SqlWhere();
         where.addExact("courseId", courseId);
-        String sql = "delete from sgininfo" + where.toString();
+        String sql = "delete from signinfo" + where.toString();
         DbUtil.execute(sql,true);
     }
 
@@ -60,7 +60,7 @@ public class SgininfoDaoImp implements SgininfoDao
         SqlWhere where = new SqlWhere();
         where.addExact("courseId", courseId);
         where.addExact("studentCode", stuCode);
-        String sql = "delete from sgininfo" + where.toString();
+        String sql = "delete from signinfo" + where.toString();
         DbUtil.execute(sql,true);
     }
 
@@ -68,7 +68,7 @@ public class SgininfoDaoImp implements SgininfoDao
     @Override
     public void deleteAll() throws Exception
     {
-        String sql = "delete from sgininfo";
+        String sql = "delete from signinfo";
         DbUtil.execute(sql,true);
     }
 }

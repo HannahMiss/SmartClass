@@ -581,7 +581,7 @@ public class StudentResource
     }
 
 
-    /*微信小程序  提问功能相关 功能3.4*/
+    /*微信小程序  反馈功能相关 功能3.4*/
     @Path("feedback")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
@@ -592,8 +592,20 @@ public class StudentResource
         JSONObject jsReq = new JSONObject(reqText);
         short courseId = (short) jsReq.getInt("courseId");
         String studentCode = jsReq.getString("studentId");
-        String descr =  jsReq.getString("feedbackOpt");
-
+        int feedbackOpt =  jsReq.getInt("feedbackOpt");
+        String descr = null;
+        switch (feedbackOpt)
+        {
+            case 1:
+                descr = "quick";
+                break;
+            case 2:
+                descr = "invisible";
+                break;
+            case 3:
+                descr = "inaudible";
+                break;
+        }
         /*如果没有上课，则返回 还未上课
         * 如果开始上课，则把收到的JSON（提问内容）信息写入库
         * */

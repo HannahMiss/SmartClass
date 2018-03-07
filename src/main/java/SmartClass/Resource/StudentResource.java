@@ -380,16 +380,16 @@ public class StudentResource
 
 
     /*微信小程序获取该学生课程列表 功能3.1.2*/
-    @Path("courseInfo/{studentId}")
+    @Path("courseInfo/{studentCode}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public String courseList(@PathParam("studentId") short studentId, @Context HttpServletRequest request)
+    public String courseList(@PathParam("studentCode") String studentCode, @Context HttpServletRequest request)
     {
         JSONObject reply = new JSONObject();
         /*查询*/
         try
         {
-            Student student = studentDao.getById(studentId);
+            Student student = studentDao.getByCode(studentCode);
             JSONArray classes = new JSONArray();
             for (Course course : student.getCourses())
             {

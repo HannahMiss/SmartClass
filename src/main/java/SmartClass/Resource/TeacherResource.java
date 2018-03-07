@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,18 +38,17 @@ public class TeacherResource
     /*添加老师*/
     @POST
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map<String,Object> addteacher(String reqText,@Context HttpServletRequest request,
-                                         @Context HttpServletResponse response)
+    public Map<String,Object> addteacher(String reqText,@Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
             reply.put("status", 1000);
             reply.put("msg","此操作是只能由管理员执行，请先登录！");
             return reply;
+
         }
         /*处理请求*/
         JSONObject jsReq = new JSONObject(reqText);
@@ -85,11 +85,9 @@ public class TeacherResource
     @DELETE
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> deleteTeacher(@PathParam("teacherId") short teacherId,
-                                            @Context HttpServletRequest request,
-                                            @Context HttpServletResponse response)
+                                            @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
-        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -130,11 +128,9 @@ public class TeacherResource
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> updataTeacher(@PathParam("teacherId") short teacherId,String reqText,
-                                            @Context HttpServletRequest request,
-                                            @Context HttpServletResponse response)
+                                            @Context HttpServletRequest request)
     {
         Map reply = new HashMap<String,Object>();
-        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -173,10 +169,9 @@ public class TeacherResource
     /*得到所有老师*/
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public String getAllCourse(@Context HttpServletRequest request, @Context HttpServletResponse response)
+    public String getAllCourse(@Context HttpServletRequest request)
     {
         JSONObject reply = new JSONObject();
-        response.setHeader("Access-Control-Allow-Origin", "*");
         /*管理员是否登录*/
         if (!HttpSessionUtil.islogin(request,"role","admin"))
         {
@@ -315,7 +310,8 @@ public class TeacherResource
     @Path("classlist/{teacherId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public String classList(@PathParam("teacherId") short teacherId,@Context HttpServletRequest request)
+    public String classList(@PathParam("teacherId") short teacherId,@Context HttpServletRequest request,
+                            @Context HttpServletResponse response)
     {
         JSONObject reply = new JSONObject();
         /*判断是否处于登录状态*/
@@ -323,7 +319,14 @@ public class TeacherResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply.toString();
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            //return reply.toString();
         }
         /*查询*/
         try
@@ -356,7 +359,8 @@ public class TeacherResource
     @Path("selectclass/{courseId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map selectclass(@PathParam("courseId") short courseId,@Context HttpServletRequest request)
+    public Map selectclass(@PathParam("courseId") short courseId,@Context HttpServletRequest request,
+                           @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
 
@@ -365,7 +369,14 @@ public class TeacherResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            //return reply;
         }
         /*查询*/
         try
@@ -396,7 +407,7 @@ public class TeacherResource
     @Path("sgininfo")
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
-    public Map sgin(String reqText,@Context HttpServletRequest request)
+    public Map sgin(String reqText,@Context HttpServletRequest request,@Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -404,7 +415,14 @@ public class TeacherResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            //return reply;
         }
         /*处理请求*/
         JSONObject jsReq = new JSONObject(reqText);
@@ -442,7 +460,8 @@ public class TeacherResource
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map checkin(@PathParam("courseId") short courseId,
                        @PathParam("flag") int flag,
-                       @Context HttpServletRequest request)
+                       @Context HttpServletRequest request,
+                       @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -450,7 +469,13 @@ public class TeacherResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         /*查询*/
@@ -492,7 +517,8 @@ public class TeacherResource
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map classtest(@PathParam("courseId") short courseId,
                          @PathParam("flag") int flag,
-                         @Context HttpServletRequest request)
+                         @Context HttpServletRequest request,
+                         @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -500,7 +526,13 @@ public class TeacherResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         /*查询*/
@@ -514,6 +546,45 @@ public class TeacherResource
             course.setAnswerFlag((byte)flag);
             course.setTimeModified(DbUtil.now());
             courseDao.update(course);
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            reply.put("status",1000);
+            reply.put("msg","数据库错误"+e.getMessage());
+            return reply;
+        }
+        /*应答*/
+        reply.put("status",200);
+        reply.put("msg","OK");
+        return reply;
+    }
+
+    /*导出某门课的全部签到信息*/
+    @Path("downloadsignresult")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
+    public Map downloadSignResult(@Context HttpServletRequest request,@Context HttpServletResponse response)
+    {
+        Map reply = new HashMap<String,Object>();
+        /*判断是否处于登录状态*/
+        if (!HttpSessionUtil.islogin(request,"role","teacher"))
+        {
+            reply.put("status",1000);
+            reply.put("msg","此操作只能由老师执行，请先登录！");
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        /*查询*/
+        try
+        {
+
 
         } catch (Exception e)
         {

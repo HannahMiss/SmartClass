@@ -8,9 +8,11 @@ import SmartClass.tool.HttpSessionUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -33,10 +35,11 @@ public class CommunicationResource
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public String getQuestion(@PathParam("courseId")short courseId,
-                                          @QueryParam("time")String timestamp,
-                                          @QueryParam("offset")int offset,
-                                          @QueryParam("limit")int limit,
-                                          @Context HttpServletRequest request)
+                              @QueryParam("time")String timestamp,
+                              @QueryParam("offset")int offset,
+                              @QueryParam("limit")int limit,
+                              @Context HttpServletRequest request,
+                              @Context HttpServletResponse response)
     {
         JSONObject reply = new JSONObject();
         /*判断是否处于登录状态*/
@@ -44,7 +47,13 @@ public class CommunicationResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply.toString();
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
         /*查询*/
         try
@@ -79,8 +88,9 @@ public class CommunicationResource
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> getFeedback(@PathParam("courseId")short courseId,
-                                     @QueryParam("time")String timestamp,
-                                     @Context HttpServletRequest request)
+                                          @QueryParam("time")String timestamp,
+                                          @Context HttpServletRequest request,
+                                          @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -88,7 +98,13 @@ public class CommunicationResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
         /*查询*/
         try
@@ -145,7 +161,8 @@ public class CommunicationResource
     @DELETE
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> deleteQuestions(@PathParam("questionId")int questionId,
-                                              @Context HttpServletRequest request)
+                                              @Context HttpServletRequest request,
+                                              @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -153,7 +170,13 @@ public class CommunicationResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
         /*查询*/
         try
@@ -179,7 +202,8 @@ public class CommunicationResource
     @PUT
     @Produces(MediaType.APPLICATION_JSON + ";" + CHARSET_UTF_8)
     public Map<String,Object> tagAnswered(@PathParam("questionId")int questionId,
-                                          @Context HttpServletRequest request)
+                                          @Context HttpServletRequest request,
+                                          @Context HttpServletResponse response)
     {
         Map reply = new HashMap<String,Object>();
         /*判断是否处于登录状态*/
@@ -187,7 +211,13 @@ public class CommunicationResource
         {
             reply.put("status",1000);
             reply.put("msg","此操作只能由老师执行，请先登录！");
-            return reply;
+            try
+            {
+                response.sendRedirect("/teacher/html/index.html");
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
         /*查询*/
         try
@@ -207,8 +237,6 @@ public class CommunicationResource
         reply.put("msg","OK");
         return reply;
     }
-
-
 
 
 }
